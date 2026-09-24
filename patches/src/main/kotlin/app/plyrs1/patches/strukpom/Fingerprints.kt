@@ -15,9 +15,5 @@ object AdPreloadFingerprint : Fingerprint(
     definingClass = "Lcom/garnesapps/strukpom/MyApplication;",
     name = "preloadAd",
     returnType = "V",
-    parameters = listOf("Ljava/lang/String;", "Lcom/google/android/libraries/ads/mobile/sdk/common/AdFormat;"),
-    filters = listOf(
-        string("MyAds"),
-        opcode(Opcode.INVOKE_STATIC)
-    )
+    parameters = listOf("Ljava/lang/String;", "Lcom/google/android/libraries/ads/mobile/sdk/common/AdFormat;")
 )
