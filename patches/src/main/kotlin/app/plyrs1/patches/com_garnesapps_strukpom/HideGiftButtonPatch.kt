@@ -1,4 +1,4 @@
-package app.plyrs1.patches.strukpom
+package app.plyrs1.patches.com_garnesapps_strukpom
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
