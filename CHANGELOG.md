@@ -1,3 +1,9 @@
+## [1.2.0-dev.1](https://github.com/Plyrs1/morphe-patches/compare/v1.1.0...v1.2.0-dev.1) (2026-09-24)
+
+### ✨ New Features
+
+* **strukpom:** add Disable Startup Permissions patch ([05db569](https://github.com/Plyrs1/morphe-patches/commit/05db569c6bfbc53f2415e8f29ac528304c9372a9))
+
 ## [1.1.0](https://github.com/Plyrs1/morphe-patches/compare/v1.0.0...v1.1.0) (2026-09-24)
 
 ### ✨ New Features
