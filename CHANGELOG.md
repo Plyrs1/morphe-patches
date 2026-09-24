@@ -1,3 +1,9 @@
+## [1.1.0-dev.1](https://github.com/Plyrs1/morphe-patches/compare/v1.0.0...v1.1.0-dev.1) (2026-09-24)
+
+### ✨ New Features
+
+* **strukpom:** add Hide Gift Button patch and drawer brand credit ([e917a51](https://github.com/Plyrs1/morphe-patches/commit/e917a515309ae6b300e2678b5eb8d4ee4480dfe9))
+
 ## 1.0.0-dev.1 (2026-09-24)
 
 ### 🐛 Bug Fixes
