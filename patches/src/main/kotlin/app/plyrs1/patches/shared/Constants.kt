@@ -20,6 +20,20 @@ object Constants {
     )
 
     /**
+     * Compatibility definition for Cetak Struk Pom / SPBU (com.ogestudio.strukpertamini).
+     */
+    val COMPATIBILITY_STRUKPERTAMINI = Compatibility(
+        name = "Struk Pom / SPBU",
+        packageName = "com.ogestudio.strukpertamini",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x00897B,
+        targets = listOf(
+            AppTarget(version = "1.2.7"),
+            AppTarget(version = null, isExperimental = true)
+        )
+    )
+
+    /**
      * Generic example compatibility target.
      */
     val COMPATIBILITY_EXAMPLE = Compatibility(
