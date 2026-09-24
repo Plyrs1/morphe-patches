@@ -29,6 +29,17 @@ object AppPreferenceIsPremiumFingerprint : Fingerprint(
 )
 
 /**
+ * Fingerprint matching AppPreference.getReview()
+ * Returns Boolean indicating whether review has been handled.
+ */
+object AppPreferenceGetReviewFingerprint : Fingerprint(
+    definingClass = "Lcom/ogestudio/strukpertamini/preference/AppPreference;",
+    name = "getReview",
+    returnType = "Ljava/lang/Boolean;",
+    parameters = emptyList()
+)
+
+/**
  * Fingerprint matching BillingManager.setFreeAccount()
  * Neutralized to prevent resetting premium status when no Google Play purchases are returned.
  */
