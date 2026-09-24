@@ -1,16 +1,14 @@
-# 👋🧩 Morphe Patches template
+# 👋🧩 Plyrs1 Morphe Patches
 
-Template repository for Morphe Patches.
+Repository for custom Morphe patches by Plyrs1.
 
 ## ❓ About
 
-Patches for apps I like.
-
-<!-- TODO: Update this about section with a brief introduction/summary about this repo and what it offers. -->
+Custom patches for Android applications.
 
 ### How to use these patches
 
-Click here to add these patches to Morphe: https://morphe.software/add-source?github=xyz-user/xyz-patches
+Click here to add these patches to Morphe: https://morphe.software/add-source?github=Plyrs1/morphe-patches
 
 ## 🩹 Patches list
 
