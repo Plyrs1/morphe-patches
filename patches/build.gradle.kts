@@ -1,4 +1,4 @@
-group = "app.plyrs1.patches"
+group = "app.plyrs1"
 
 patches {
     about {
@@ -6,7 +6,7 @@ patches {
         description = "Custom Morphe patches by Plyrs1"
         source = "https://github.com/Plyrs1/morphe-patches.git"
         author = "Plyrs1"
-        contact = "na"
+        contact = "https://github.com/Plyrs1/morphe-patches/issues"
         website = "https://github.com/Plyrs1/morphe-patches"
         license = "GPLv3"
     }
