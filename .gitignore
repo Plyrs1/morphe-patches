@@ -128,3 +128,8 @@ node_modules/
 # Ignore IDEA files
 .idea/
 local.properties
+
+# Direnv
+.envrc
+.direnv/
+.tmp/
