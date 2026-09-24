@@ -1,3 +1,9 @@
+## [1.3.0-dev.1](https://github.com/Plyrs1/morphe-patches/compare/v1.2.0...v1.3.0-dev.1) (2026-09-24)
+
+### ✨ New Features
+
+* **com_ogestudio_strukpertamini:** add RemoveAds, HidePremiumButton, and brand credit patches ([afb7ee5](https://github.com/Plyrs1/morphe-patches/commit/afb7ee5034addbdabd4ffd6cceae15dec3c02574))
+
 ## [1.2.0](https://github.com/Plyrs1/morphe-patches/compare/v1.1.0...v1.2.0) (2026-09-24)
 
 ### ✨ New Features

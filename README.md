@@ -13,7 +13,7 @@ Click here to add these patches to Morphe: https://morphe.software/add-source?gi
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.2.0](https://github.com/Plyrs1/morphe-patches/releases/tag/v1.2.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;3 patches total
+> **[v1.3.0-dev.1](https://github.com/Plyrs1/morphe-patches/releases/tag/v1.3.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;5 patches total
 <details open>
 <summary>📦 Struk POM&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -28,6 +28,22 @@ Click here to add these patches to Morphe: https://morphe.software/add-source?gi
 | [Disable Startup Permissions](#disable-startup-permissions) | Suppresses indiscriminate startup requests for camera and storage permissions, and configures manifest for direct system camera capture. |  |
 | [Hide Gift Button](#hide-gift-button) | Hides the gift / donation button in the top action bar of the main menu. |  |
 | [Remove All Ads](#remove-all-ads) | Disables all AdMob preloading, bypasses interstitial ads, and auto-removes the watermark on receipt screens without user interaction. |  |
+
+</details>
+
+<details open>
+<summary>📦 Struk Pom / SPBU&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.2.7 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| [Hide Premium Button](#hide-premium-button) | Hides the Premium upgrade button from both the top action bar on the Home screen and the Settings menu. |  |
+| [Remove Ads](#remove-ads) | Removes all banner and interstitial ads by unlocking ad-free premium status and disabling AdMob loaders. |  |
 
 </details>
 
