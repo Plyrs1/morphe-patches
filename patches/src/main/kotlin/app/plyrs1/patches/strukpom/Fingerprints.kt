@@ -92,6 +92,7 @@ object LoadBannerFingerprint : Fingerprint(
     returnType = "V",
     parameters = emptyList()
 )
+
 /**
  * Fingerprint matching MenuActivity.onCreateOptionsMenu(Menu)
  * Inflates menu_hadiah containing the gift action button.
@@ -102,6 +103,7 @@ object MenuActivityCreateOptionsMenuFingerprint : Fingerprint(
     returnType = "Z",
     parameters = listOf("Landroid/view/Menu;")
 )
+
 /**
  * Fingerprint matching MenuActivity.kalem()
  * Called at the end of MenuActivity.onCreate after views and navigation drawer are initialized.
@@ -109,6 +111,17 @@ object MenuActivityCreateOptionsMenuFingerprint : Fingerprint(
 object MenuActivityKalemFingerprint : Fingerprint(
     definingClass = "Lcom/garnesapps/strukpom/MenuActivity;",
     name = "kalem",
+    returnType = "V",
+    parameters = emptyList()
+)
+
+/**
+ * Fingerprint matching MenuActivity constructor <init>()
+ * Initializes permissionLauncherMultiple and other ActivityResultLaunchers.
+ */
+object MenuActivityInitFingerprint : Fingerprint(
+    definingClass = "Lcom/garnesapps/strukpom/MenuActivity;",
+    name = "<init>",
     returnType = "V",
     parameters = emptyList()
 )
