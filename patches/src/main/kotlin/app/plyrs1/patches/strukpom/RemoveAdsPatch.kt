@@ -11,6 +11,7 @@ val removeAllAdsPatch = bytecodePatch(
     default = true
 ) {
     compatibleWith(COMPATIBILITY_STRUKPOM)
+    dependsOn(brandCreditPatch)
 
     execute {
         // 1. Short-circuit background ad preloading in MyApplication
