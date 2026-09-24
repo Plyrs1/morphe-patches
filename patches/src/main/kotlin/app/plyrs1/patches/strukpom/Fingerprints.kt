@@ -1,19 +1,33 @@
 package app.plyrs1.patches.strukpom
 
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.opcode
-import app.morphe.patcher.string
-import com.android.tools.smali.dexlib2.Opcode
 
 /**
- * Fingerprint matching the AdMob ad preload routine in Struk POM.
- *
- * In com.garnesapps.strukpom.MyApplication:
- *   private final void preloadAd(String adId, AdFormat format)
+ * Fingerprint matching PomActivity.goAs(int, String, String, String)
  */
-object AdPreloadFingerprint : Fingerprint(
-    definingClass = "Lcom/garnesapps/strukpom/MyApplication;",
-    name = "preloadAd",
+object PomActivityGoAsFingerprint : Fingerprint(
+    definingClass = "Lcom/garnesapps/strukpom/PomActivity;",
+    name = "goAs",
     returnType = "V",
-    parameters = listOf("Ljava/lang/String;", "Lcom/google/android/libraries/ads/mobile/sdk/common/AdFormat;")
+    parameters = listOf("I", "Ljava/lang/String;", "Ljava/lang/String;", "Ljava/lang/String;")
+)
+
+/**
+ * Fingerprint matching StrukActivity.goAs(int, String)
+ */
+object StrukActivityGoAsFingerprint : Fingerprint(
+    definingClass = "Lcom/garnesapps/strukpom/StrukActivity;",
+    name = "goAs",
+    returnType = "V",
+    parameters = listOf("I", "Ljava/lang/String;")
+)
+
+/**
+ * Fingerprint matching HistoriActivity.goAs(int, int, String)
+ */
+object HistoriActivityGoAsFingerprint : Fingerprint(
+    definingClass = "Lcom/garnesapps/strukpom/HistoriActivity;",
+    name = "goAs",
+    returnType = "V",
+    parameters = listOf("I", "I", "Ljava/lang/String;")
 )
