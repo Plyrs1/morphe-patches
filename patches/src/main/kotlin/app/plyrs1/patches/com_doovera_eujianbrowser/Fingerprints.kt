@@ -165,6 +165,18 @@ object ExamActivityOnCreateFingerprint : Fingerprint(
     parameters = listOf("Landroid/os/Bundle;")
 )
 
+/**
+ * ExamActivity.S()V — starts lock task / app pinning mode.
+ * Calls examActivity.startLockTask() to pin the screen so the user cannot exit.
+ * Returning early disables screen pinning.
+ */
+object AutoPinFingerprint : Fingerprint(
+    definingClass = "Lcom/doovera/eujianbrowser/ExamActivity;",
+    name = "S",
+    returnType = "V",
+    parameters = emptyList()
+)
+
 // ─── SplashActivity startup security ──────────────────────────────────────────
 
 /**

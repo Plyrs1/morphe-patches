@@ -277,3 +277,25 @@ val allowSystemUIPatch = bytecodePatch(
         FullscreenEnforcementFingerprint.method.addInstructions(0, "return-void")
     }
 }
+
+// ─── 12. Auto-Pin App (Lock Task Mode) ────────────────────────────────────────
+
+/**
+ * Disables automatic screen pinning (lock task mode).
+ *
+ * ExamActivity.S() invokes Activity.startLockTask() to pin the exam to the screen
+ * (locking the user out of Home, Recents, and navigation gestures).
+ * Returning early from S() disables screen pinning completely.
+ */
+@Suppress("unused")
+val removeAutoPinAppPatch = bytecodePatch(
+    name = "Remove Auto-Pin App",
+    description = "Disables automatic screen pinning / lock task mode so the app is not pinned to the screen.",
+    default = true
+) {
+    compatibleWith(COMPATIBILITY_EUJIANBROWSER)
+
+    execute {
+        AutoPinFingerprint.method.addInstructions(0, "return-void")
+    }
+}
