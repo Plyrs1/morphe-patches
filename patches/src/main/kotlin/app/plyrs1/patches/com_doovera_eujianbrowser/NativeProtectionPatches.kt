@@ -199,7 +199,7 @@ val bypassPipDetectionPatch = bytecodePatch(
     }
 }
 
-// ─── 9. Touch Obscurity Detection ────────────────────────────────────────────
+// ─── 9. Touch Obscurity Detection ───────────────────────────────────────────
 
 /**
  * Disables the partially-obscured touch detection (API 29+).
@@ -297,5 +297,30 @@ val removeAutoPinAppPatch = bytecodePatch(
 
     execute {
         AutoPinFingerprint.method.addInstructions(0, "return-void")
+    }
+}
+
+// ─── 13. Clipboard Guard ──────────────────────────────────────────────────────
+
+/**
+ * Disables ClipboardGuard's clipboard-clearing operations.
+ *
+ * u0.d.run() contains both calls to ClipboardManager.setPrimaryClip():
+ *   - Case 1: wipes existing clipboard on exam startup
+ *   - Case 0: wipes clipboard whenever text is copied anywhere on the device
+ *
+ * Patching run() to return-void neutralizes both destructive clipboard operations,
+ * keeping the system clipboard intact and allowing copy-paste to work normally.
+ */
+@Suppress("unused")
+val disableClipboardGuardPatch = bytecodePatch(
+    name = "Disable Clipboard Guard",
+    description = "Prevents the app from wiping the clipboard on exam start and when copying text.",
+    default = true
+) {
+    compatibleWith(COMPATIBILITY_EUJIANBROWSER)
+
+    execute {
+        ClipboardGuardRunFingerprint.method.addInstructions(0, "return-void")
     }
 }

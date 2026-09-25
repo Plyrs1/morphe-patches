@@ -177,6 +177,23 @@ object AutoPinFingerprint : Fingerprint(
     parameters = emptyList()
 )
 
+// ─── ClipboardGuard ───────────────────────────────────────────────────────────
+
+/**
+ * u0.d.run()V — ClipboardGuard runner.
+ * Contains both calls to ClipboardManager.setPrimaryClip():
+ *   - Case 1: wipes clipboard on exam startup
+ *   - Case 0: wipes clipboard whenever text is copied
+ *
+ * Patching run() to return-void neutralizes both destructive clipboard operations.
+ */
+object ClipboardGuardRunFingerprint : Fingerprint(
+    definingClass = "Lu0/d;",
+    name = "run",
+    returnType = "V",
+    parameters = emptyList()
+)
+
 // ─── SplashActivity startup security ──────────────────────────────────────────
 
 /**
