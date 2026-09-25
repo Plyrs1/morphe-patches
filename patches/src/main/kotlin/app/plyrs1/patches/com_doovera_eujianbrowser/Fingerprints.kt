@@ -169,17 +169,28 @@ object SplashActivityOnCreateFingerprint : Fingerprint(
     parameters = listOf("Landroid/os/Bundle;")
 )
 
-// ─── Pre-exam blacklist scanner ───────────────────────────────────────────────
+// ─── Pre-exam blacklist & launch methods ──────────────────────────────────────
 
 /**
  * q0.v.invokeSuspend(Object)Object — pre-exam blacklist coroutine body.
  * Fetches dynamic blacklist from API, merges with hardcoded list, scans
  * getInstalledApplications(), and blocks exam start if any match found.
- * Returning early (with COROUTINE_SUSPENDED sentinel) short-circuits the check.
  */
 object BlacklistScanFingerprint : Fingerprint(
     definingClass = "Lq0/v;",
     name = "invokeSuspend",
     returnType = "Ljava/lang/Object;",
     parameters = listOf("Ljava/lang/Object;")
+)
+
+/**
+ * MainActivity.t()V — pre-exam verification and ExamActivity launch.
+ * Verifies overlay permission, DND state, and ringer mode, then launches
+ * ExamActivity with EXAM_URL, TENANT_CODE, and IS_V3 extras.
+ */
+object MainActivityStartExamFingerprint : Fingerprint(
+    definingClass = "Lcom/doovera/eujianbrowser/MainActivity;",
+    name = "t",
+    returnType = "V",
+    parameters = emptyList()
 )
