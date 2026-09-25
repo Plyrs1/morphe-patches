@@ -1,3 +1,9 @@
+## [1.3.0-dev.3](https://github.com/Plyrs1/morphe-patches/compare/v1.3.0-dev.2...v1.3.0-dev.3) (2026-09-25)
+
+### ✨ New Features
+
+* **com_pertaminiku:** Add PairIP patch ([d932728](https://github.com/Plyrs1/morphe-patches/commit/d9327284f4727d5da069f01e0c8ee8e8885ae00a))
+
 ## [1.3.0-dev.2](https://github.com/Plyrs1/morphe-patches/compare/v1.3.0-dev.1...v1.3.0-dev.2) (2026-09-25)
 
 ### ✨ New Features

@@ -13,7 +13,7 @@ Click here to add these patches to Morphe: https://morphe.software/add-source?gi
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.3.0-dev.2](https://github.com/Plyrs1/morphe-patches/releases/tag/v1.3.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;7 patches total
+> **[v1.3.0-dev.3](https://github.com/Plyrs1/morphe-patches/releases/tag/v1.3.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;8 patches total
 <details open>
 <summary>📦 Struk Pom / SPBU&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
@@ -32,6 +32,22 @@ Click here to add these patches to Morphe: https://morphe.software/add-source?gi
 </details>
 
 <details open>
+<summary>📦 Pertaminiku&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+
+**🎯 Supported versions:**
+
+| 1.0.2 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| [Disable Licensing](#disable-licensing) | Bypasses PairIP license verification to prevent 'Something went wrong' errors on emulators and devices without Google Play. |  |
+| [Lifetime Premium](#lifetime-premium) | Unlocks lifetime premium: removes watermark forever, disables ads, unlocks all templates. |  |
+
+</details>
+
+<details open>
 <summary>📦 Struk POM&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
@@ -45,21 +61,6 @@ Click here to add these patches to Morphe: https://morphe.software/add-source?gi
 | [Disable Startup Permissions](#disable-startup-permissions) | Suppresses indiscriminate startup requests for camera and storage permissions, and configures manifest for direct system camera capture. |  |
 | [Hide Gift Button](#hide-gift-button) | Hides the gift / donation button in the top action bar of the main menu. |  |
 | [Remove All Ads](#remove-all-ads) | Disables all AdMob preloading, bypasses interstitial ads, and auto-removes the watermark on receipt screens without user interaction. |  |
-
-</details>
-
-<details open>
-<summary>📦 Pertaminiku&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
-
-**🎯 Supported versions:**
-
-| 1.0.2 |
-| :---: |
-
-| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
-|----------|----------------|-----------|
-| [Lifetime Premium](#lifetime-premium) | Unlocks lifetime premium: removes watermark forever, disables ads, unlocks all templates. |  |
 
 </details>
 
