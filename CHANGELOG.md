@@ -1,3 +1,18 @@
+## [1.4.0-dev.1](https://github.com/Plyrs1/morphe-patches/compare/v1.3.0...v1.4.0-dev.1) (2026-09-25)
+
+### 🐛 Bug Fixes
+
+* **com_doovera_eujianbrowser:** clear FLAG_SECURE on onResume for screenshot support ([f095bb9](https://github.com/Plyrs1/morphe-patches/commit/f095bb9c3e5e3e30a33e4767b53bffbd2a4ac26a))
+* **com_doovera_eujianbrowser:** fix activity lifecycle contract and register width in startup bypass ([9c7f648](https://github.com/Plyrs1/morphe-patches/commit/9c7f648136dbf2efd55c314e001b435205455592))
+* **com_doovera_eujianbrowser:** fix NoSuchFieldError on Unit singleton and direct exam launch ([0494667](https://github.com/Plyrs1/morphe-patches/commit/0494667005e4c4fba68bda46759e1a4e33beac23))
+
+### ✨ New Features
+
+* **com_doovera_eujianbrowser:** add patch to disable ClipboardGuard and preserve clipboard data ([cea6a78](https://github.com/Plyrs1/morphe-patches/commit/cea6a7839907bfc9e03130e7fc85695ef007c04e))
+* **com_doovera_eujianbrowser:** add patch to remove auto-pin app and allow app switching ([fa9f3d3](https://github.com/Plyrs1/morphe-patches/commit/fa9f3d3f31a8458a3381bb232063bb5cbbe70f21))
+* **com_doovera_eujianbrowser:** Add security bypass and background persistence patches ([40cc3b0](https://github.com/Plyrs1/morphe-patches/commit/40cc3b002e02fe7d4b1aca12c44885c913d0e705))
+* **pertaminiku:** add first-launch credit toast ([f35d17c](https://github.com/Plyrs1/morphe-patches/commit/f35d17cbdf4fb75562fce8ef842611b5f6253658))
+
 ## [1.3.0](https://github.com/Plyrs1/morphe-patches/compare/v1.2.0...v1.3.0) (2026-09-25)
 
 ### 🐛 Bug Fixes
