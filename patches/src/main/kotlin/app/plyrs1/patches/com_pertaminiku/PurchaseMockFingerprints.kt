@@ -17,3 +17,11 @@ object QueryPurchasesResponseFingerprint : Fingerprint(
     returnType = "V",
     parameters = listOf("LT0/f;", "Ljava/util/List;")
 )
+
+/** Constructor for the Flutter launcher activity. */
+object MainActivityConstructorFingerprint : Fingerprint(
+    definingClass = "Lcom/pertaminiku/MainActivity;",
+    name = "<init>",
+    returnType = "V",
+    parameters = emptyList()
+)
