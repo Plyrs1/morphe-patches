@@ -1,3 +1,16 @@
+## [1.3.0](https://github.com/Plyrs1/morphe-patches/compare/v1.2.0...v1.3.0) (2026-09-25)
+
+### 🐛 Bug Fixes
+
+* **com_pertaminiku:** inject premium purchase before conversion ([24f5301](https://github.com/Plyrs1/morphe-patches/commit/24f5301e87d4f5cee0ac89eb039f3c0ea560f85b))
+
+### ✨ New Features
+
+* **com_ogestudio_strukpertamini:** add BypassReviewDialog patch ([0c196d4](https://github.com/Plyrs1/morphe-patches/commit/0c196d42a0047e1114cfd2ab0c7c2e18f602e32f))
+* **com_ogestudio_strukpertamini:** add RemoveAds, HidePremiumButton, and brand credit patches ([afb7ee5](https://github.com/Plyrs1/morphe-patches/commit/afb7ee5034addbdabd4ffd6cceae15dec3c02574))
+* **com_pertaminiku:** Add lifetime premium patch ([6ebdf53](https://github.com/Plyrs1/morphe-patches/commit/6ebdf53c269c7ed5dd949ab4f79ad1d490d6b38e))
+* **com_pertaminiku:** Add PairIP patch ([d932728](https://github.com/Plyrs1/morphe-patches/commit/d9327284f4727d5da069f01e0c8ee8e8885ae00a))
+
 ## [1.3.0-dev.4](https://github.com/Plyrs1/morphe-patches/compare/v1.3.0-dev.3...v1.3.0-dev.4) (2026-09-25)
 
 ### 🐛 Bug Fixes
