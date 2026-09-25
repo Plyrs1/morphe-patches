@@ -48,6 +48,20 @@ object Constants {
     )
 
     /**
+     * Compatibility definition for E-Ujian Browser (com.doovera.eujianbrowser).
+     */
+    val COMPATIBILITY_EUJIANBROWSER = Compatibility(
+        name = "E-Ujian Browser",
+        packageName = "com.doovera.eujianbrowser",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x2196F3,
+        targets = listOf(
+            AppTarget(version = "3.1.3"),
+            AppTarget(version = null, isExperimental = true)
+        )
+    )
+
+    /**
      * Generic example compatibility target.
      */
     val COMPATIBILITY_EXAMPLE = Compatibility(
