@@ -1,3 +1,9 @@
+## [1.3.0-dev.4](https://github.com/Plyrs1/morphe-patches/compare/v1.3.0-dev.3...v1.3.0-dev.4) (2026-09-25)
+
+### 🐛 Bug Fixes
+
+* **com_pertaminiku:** inject premium purchase before conversion ([24f5301](https://github.com/Plyrs1/morphe-patches/commit/24f5301e87d4f5cee0ac89eb039f3c0ea560f85b))
+
 ## [1.3.0-dev.3](https://github.com/Plyrs1/morphe-patches/compare/v1.3.0-dev.2...v1.3.0-dev.3) (2026-09-25)
 
 ### ✨ New Features
