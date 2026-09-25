@@ -1,3 +1,10 @@
+## [1.3.0-dev.2](https://github.com/Plyrs1/morphe-patches/compare/v1.3.0-dev.1...v1.3.0-dev.2) (2026-09-25)
+
+### ✨ New Features
+
+* **com_ogestudio_strukpertamini:** add BypassReviewDialog patch ([0c196d4](https://github.com/Plyrs1/morphe-patches/commit/0c196d42a0047e1114cfd2ab0c7c2e18f602e32f))
+* **com_pertaminiku:** Add lifetime premium patch ([6ebdf53](https://github.com/Plyrs1/morphe-patches/commit/6ebdf53c269c7ed5dd949ab4f79ad1d490d6b38e))
+
 ## [1.3.0-dev.1](https://github.com/Plyrs1/morphe-patches/compare/v1.2.0...v1.3.0-dev.1) (2026-09-24)
 
 ### ✨ New Features
