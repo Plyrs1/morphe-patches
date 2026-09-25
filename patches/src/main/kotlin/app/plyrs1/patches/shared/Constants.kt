@@ -34,6 +34,20 @@ object Constants {
     )
 
     /**
+     * Compatibility definition for Pertaminiku (com.pertaminiku).
+     */
+    val COMPATIBILITY_PERTAMINIKU = Compatibility(
+        name = "Pertaminiku",
+        packageName = "com.pertaminiku",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0xE53935,
+        targets = listOf(
+            AppTarget(version = "1.0.2"),
+            AppTarget(version = null, isExperimental = true)
+        )
+    )
+
+    /**
      * Generic example compatibility target.
      */
     val COMPATIBILITY_EXAMPLE = Compatibility(
