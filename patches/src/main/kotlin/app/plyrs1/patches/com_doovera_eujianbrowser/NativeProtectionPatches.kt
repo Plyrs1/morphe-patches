@@ -56,9 +56,7 @@ val bypassMultiWindowDetectionPatch = bytecodePatch(
  * Allows the exam to run with Do Not Disturb mode active.
  *
  * w() queries NotificationManager.getCurrentInterruptionFilter() and fires
- * the alarm if DND is enabled (filter 2/3/4). The intent is to ensure the
- * alarm is audible — moot once disableViolationAlarmPatch is applied, but
- * patching w() also removes the warning dialog shown to the student.
+ * the alarm if DND is enabled (filter 2/3/4). Returning early skips the check.
  */
 @Suppress("unused")
 val bypassDndDetectionPatch = bytecodePatch(
@@ -79,7 +77,7 @@ val bypassDndDetectionPatch = bytecodePatch(
  * Allows the exam to run with the device on silent or vibrate.
  *
  * x() queries AudioManager.getRingerMode() and fires the alarm if the result
- * is not RINGER_MODE_NORMAL (2). Same rationale as DND patch above.
+ * is not RINGER_MODE_NORMAL (2). Returning early skips the check.
  */
 @Suppress("unused")
 val bypassSilentModeDetectionPatch = bytecodePatch(
@@ -122,17 +120,8 @@ val disableOverlayGuardPatch = bytecodePatch(
 /**
  * Prevents the alarm from firing when the activity is paused.
  *
- * onPause() calls R() unconditionally when the exam loses focus unless
- * specific flags indicate an authorized reason (file chooser, split-screen,
- * grace timer). Injecting return-void as the first instruction skips the
- * entire body — the activity still calls super.onPause() via the existing
- * code path which is now unreachable, but Android lifecycle is unaffected
- * because returning early from onPause() before super is called is safe for
- * our use case (the activity is only paused, not destroyed).
- *
- * Note: to preserve correct lifecycle behaviour we only skip the R() call
- * by short-circuiting the method. The existing super.onPause() call that
- * already exists in the method body handles the actual lifecycle transition.
+ * In Android, onPause() MUST call super.onPause() to satisfy the lifecycle contract.
+ * We invoke super.onPause() first, then return immediately to avoid calling R().
  */
 @Suppress("unused")
 val disableOnPauseAlarmPatch = bytecodePatch(
@@ -143,9 +132,13 @@ val disableOnPauseAlarmPatch = bytecodePatch(
     compatibleWith(COMPATIBILITY_EUJIANBROWSER)
 
     execute {
-        // Inject at index 0: skips W=false assignment, D(), super.onPause(), and R().
-        // The activity will still be paused normally by the Android framework.
-        OnPauseFingerprint.method.addInstructions(0, "return-void")
+        OnPauseFingerprint.method.addInstructions(
+            0,
+            """
+                invoke-super {p0}, Lg/k;->onPause()V
+                return-void
+            """
+        )
     }
 }
 
@@ -155,13 +148,9 @@ val disableOnPauseAlarmPatch = bytecodePatch(
  * Prevents the 1500 ms delayed focus-loss alarm.
  *
  * onWindowFocusChanged(false) schedules Runnable case 5 which, after 1500 ms,
- * logs "Window lost focus" and calls R(). onWindowFocusChanged(true) also
- * re-invokes w() and x() (DND + silent checks) on every focus gain.
- *
- * We let focus=true branch run normally (so fullscreen UI is restored) but
- * skip the focus=false alarm scheduling by returning early only when the
- * parameter is false. This requires a targeted injection rather than return-void
- * at index 0 — we check p1 and conditionally return.
+ * logs "Window lost focus" and calls R().
+ * We invoke super.onWindowFocusChanged(p1), then if focus is lost (p1 == false),
+ * return early so the alarm is never scheduled.
  */
 @Suppress("unused")
 val disableFocusLossAlarmPatch = bytecodePatch(
@@ -172,12 +161,10 @@ val disableFocusLossAlarmPatch = bytecodePatch(
     compatibleWith(COMPATIBILITY_EUJIANBROWSER)
 
     execute {
-        // p1 = hasFocus (boolean). If false (lost focus), return immediately
-        // before the 1500 ms delayed handler is posted. If true, fall through
-        // to the existing body which restores immersive UI — that is desirable.
         OnWindowFocusChangedFingerprint.method.addInstructions(
             0,
             """
+                invoke-super {p0, p1}, Landroid/app/Activity;->onWindowFocusChanged(Z)V
                 if-nez p1, :skip_early_return
                 return-void
                 :skip_early_return
@@ -191,9 +178,7 @@ val disableFocusLossAlarmPatch = bytecodePatch(
 /**
  * Prevents exam termination when Picture-in-Picture mode is entered.
  *
- * onPictureInPictureModeChanged(true) calls M() which sets f1903I=true,
- * stops lock task, clears the WebView, and calls finish(). Returning early
- * skips M() — the activity remains alive in PiP window.
+ * Invokes super.onPictureInPictureModeChanged, then returns before M() can be called.
  */
 @Suppress("unused")
 val bypassPipDetectionPatch = bytecodePatch(
@@ -204,7 +189,13 @@ val bypassPipDetectionPatch = bytecodePatch(
     compatibleWith(COMPATIBILITY_EUJIANBROWSER)
 
     execute {
-        OnPipModeChangedFingerprint.method.addInstructions(0, "return-void")
+        OnPipModeChangedFingerprint.method.addInstructions(
+            0,
+            """
+                invoke-super {p0, p1, p2}, La/o;->onPictureInPictureModeChanged(ZLandroid/content/res/Configuration;)V
+                return-void
+            """
+        )
     }
 }
 
@@ -213,13 +204,8 @@ val bypassPipDetectionPatch = bytecodePatch(
 /**
  * Disables the partially-obscured touch detection (API 29+).
  *
- * dispatchTouchEvent checks MotionEvent.FLAG_WINDOW_IS_PARTIALLY_OBSCURED (bit 2).
- * When set it marks f1923c0=true and schedules a 1500 ms alarm for "popup/freeform
- * detected". Returning super.dispatchTouchEvent() directly passes all touch events
- * through without the obscurity check.
- *
- * We inject at index 0 to call super immediately and return its result,
- * bypassing the entire flag-check block.
+ * dispatchTouchEvent checks MotionEvent.FLAG_WINDOW_IS_PARTIALLY_OBSCURED.
+ * We delegate directly to super.dispatchTouchEvent and return its result.
  */
 @Suppress("unused")
 val disableTouchObscurityDetectionPatch = bytecodePatch(
@@ -230,8 +216,6 @@ val disableTouchObscurityDetectionPatch = bytecodePatch(
     compatibleWith(COMPATIBILITY_EUJIANBROWSER)
 
     execute {
-        // Skip the flag check entirely; just delegate to the superclass.
-        // p1 = MotionEvent. Return value is boolean (consumed).
         DispatchTouchEventFingerprint.method.addInstructions(
             0,
             """
@@ -248,20 +232,8 @@ val disableTouchObscurityDetectionPatch = bytecodePatch(
 /**
  * Removes FLAG_SECURE so screenshots and screen recording work normally.
  *
- * onCreate() calls getWindow().setFlags(0x2000, 0x2000) which sets FLAG_SECURE.
- * We inject a clearFlags call at index 0 that runs before setFlags, then let
- * the existing setFlags call run — then immediately clear it again.
- *
- * Simpler: inject clearFlags(FLAG_SECURE) AFTER onCreate's super call so it
- * runs last and overrides any setFlags that happened during onCreate.
- * We add it at index 0 before everything; FLAG_SECURE set by line 1262 of the
- * original will run after our injection but we clear it again, so we actually
- * need to add AFTER the existing setFlags. Since addInstructions(0) prepends,
- * and the existing setFlags is called later in the body, our clearFlags at
- * index 0 will be overwritten. Instead we use a large index to append after
- * all existing instructions. Use index Int.MAX_VALUE to append at end.
- *
- * The method has .locals 14 — v0..v13 all available.
+ * onCreate() sets FLAG_SECURE (0x2000). At the end of onCreate(), we clear it
+ * via Window.clearFlags(0x2000).
  */
 @Suppress("unused")
 val removeScreenshotProtectionPatch = bytecodePatch(
@@ -272,14 +244,12 @@ val removeScreenshotProtectionPatch = bytecodePatch(
     compatibleWith(COMPATIBILITY_EUJIANBROWSER)
 
     execute {
-        // Append after all existing instructions (end of onCreate body).
-        // Clears FLAG_SECURE (0x2000) that was set earlier in onCreate.
         ExamActivityOnCreateFingerprint.method.addInstructions(
             ExamActivityOnCreateFingerprint.method.implementation!!.instructions.size - 1,
             """
                 invoke-virtual {p0}, Landroid/app/Activity;->getWindow()Landroid/view/Window;
                 move-result-object v0
-                const/high16 v1, 0x20000000
+                const/16 v1, 0x2000
                 invoke-virtual {v0, v1}, Landroid/view/Window;->clearFlags(I)V
             """
         )

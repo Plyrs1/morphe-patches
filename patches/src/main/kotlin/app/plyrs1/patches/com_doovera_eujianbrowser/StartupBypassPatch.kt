@@ -5,77 +5,16 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.plyrs1.patches.shared.Constants.COMPATIBILITY_EUJIANBROWSER
 
 /**
- * Bypasses all startup environment and integrity checks in SplashActivity.
+ * Bypasses all startup environment, VM, emulator, hook, and cloner checks
+ * in SplashActivity.
  *
- * SplashActivity.onCreate() runs a coroutine that performs five sequential
- * checks before allowing navigation to MainActivity. Any non-null error
- * string aborts launch with a fatal dialog. Returning early from onCreate()
- * at index 0 skips all checks and proceeds to the normal activity flow.
- *
- * Checks bypassed:
- *
- * 1. App Sandbox Path Verification
- *    Regex validates dataDir against ^/data/(data|user/\d+)/<pkg>/?$
- *    Error: "Aplikasi berjalan di lingkungan tidak valid"
- *    Catches: Parallel Space, VMOS, any container remapping data paths.
- *
- * 2. App Cloner / Dual Space Detection
- *    Reads /proc/self/maps, searches for 23 known cloner package names.
- *    Error: "Aplikasi tidak dapat dijalankan melalui aplikasi cloner"
- *    Catches: com.lbe.parallel, com.ludashi.dualspace, com.parallel.space,
- *             com.vmos.pro, com.vmos.app, com.redfinger.app, etc.
- *
- * 3. VM / Cloud Phone Detection (score ≥ 2)
- *    Reads /proc/version and /proc/self/mountinfo for VM markers.
- *    Error: "Aplikasi tidak dapat dijalankan melalui aplikasi virtualisasi atau VM cloner"
- *    Catches: vmos, vphone, cloud-android, f1vm, anbox, waydroid, cuttlefish.
- *
- * 4. Dynamic Hook / Instrumentation Detection (score ≥ 2)
- *    Reads /proc/self/maps for injected hook library names.
- *    Catches: libfrida, libxposed, libsandhook, libepic.so, libwhale,
- *             libsubstrate, libvmos, libvphone, libcloud-android.
- *
- * 5. Emulator Detection (score ≥ 2)
- *    Multi-signal: Build fields, sensor count < 3, QEMU device nodes.
- *    Error: "Aplikasi terdeteksi berjalan di emulator"
- *    Catches: Google emulator, Genymotion, Bluestacks, NOX, LDPlayer,
- *             MEmu, VMOS, cuttlefish, and QEMU device nodes.
- *
- * Implementation note: SplashActivity.onCreate() has .locals 18 and begins
- * by inflating the splash layout. Injecting return-void at index 0 skips
- * setContentView too, which means the activity finishes blank — the coroutine
- * that runs checks never starts and navigation to MainActivity never happens.
- *
- * Better approach: let the layout inflate (it needs a few instructions before
- * the security coroutine is launched), then return-void after setContentView.
- * The coroutine is launched via a nested lambda well into the method, so
- * a large index injection after the checks are registered is cleaner.
- *
- * Simplest safe approach: patch the individual check results. Each check
- * sets a local `str` variable to a non-null error string on failure.
- * Returning before any of those assignments means str stays null throughout
- * and the activity proceeds normally. We return-void at index 0 and rely on
- * the fact that super.onCreate() is called by the framework regardless
- * (it was already called before our injection runs via the standard lifecycle).
- *
- * Actually the correct approach for SplashActivity is to let onCreate run
- * normally but neutralise the coroutine that does the checks by making the
- * check produce a null result. The easiest single-point bypass is to inject
- * return-void at index 0 in onCreate — the Activity lifecycle hooks
- * (onCreate, onStart, onResume) are called by the framework even if we
- * return early, but setContentView will not run, leaving a blank activity.
- *
- * To get correct behaviour: inject after super.onCreate() and setContentView()
- * but before the security coroutine is launched. Based on smali analysis,
- * the layout inflate is at line 6 (a few instructions in) and the security
- * coroutine is launched deep inside a nested lambda chain. The safest
- * single-instruction patch is at index 0 accepting the blank screen trade-off
- * for the brief 1-2 second SplashActivity display, after which it navigates
- * to MainActivity automatically regardless.
- *
- * The SplashActivity only shows a progress bar during loading; patching it
- * to return-void means the splash never appears but the user goes straight
- * to MainActivity (which is the desired behaviour for testing).
+ * ## Register Layout Note (.locals 18)
+ * With .locals 18, parameters p0 and p1 are mapped to v18 and v19.
+ * Standard 35c instructions (invoke-direct, iput-object) only accept 4-bit
+ * register indices (v0..v15). Therefore:
+ *   - We use move-object/from16 v1, p0 to copy `this` into low register v1
+ *   - We use invoke-super/range {p0 .. p1} for the super.onCreate call
+ *   - All subsequent instructions reference v1 (<= 15) instead of p0
  */
 @Suppress("unused")
 val bypassStartupSecurityPatch = bytecodePatch(
@@ -87,10 +26,25 @@ val bypassStartupSecurityPatch = bytecodePatch(
     compatibleWith(COMPATIBILITY_EUJIANBROWSER)
 
     execute {
-        // Return-void at index 0 prevents the security coroutine from ever
-        // being launched. The splash screen is skipped (blank activity for ~1s)
-        // but navigation to MainActivity still occurs via the existing intent
-        // already registered in the framework's activity back-stack.
-        SplashActivityOnCreateFingerprint.method.addInstructions(0, "return-void")
+        SplashActivityOnCreateFingerprint.method.addInstructions(
+            0,
+            """
+                move-object/from16 v1, p0
+                invoke-super/range {p0 .. p1}, Lg/k;->onCreate(Landroid/os/Bundle;)V
+                new-instance v0, LB0/f;
+                invoke-direct {v0, v1}, LB0/f;-><init>(Lg/k;)V
+                iput-object v0, v1, Lcom/doovera/eujianbrowser/SplashActivity;->z:LB0/f;
+                new-instance v0, LB/a;
+                const/16 v2, 0xe
+                invoke-direct {v0, v2, v1}, LB/a;-><init>(ILjava/lang/Object;)V
+                new-instance v2, Landroid/os/Handler;
+                invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
+                move-result-object v3
+                invoke-direct {v2, v3}, Landroid/os/Handler;-><init>(Landroid/os/Looper;)V
+                const-wide/16 v3, 0x12c
+                invoke-virtual {v2, v0, v3, v4}, Landroid/os/Handler;->postDelayed(Ljava/lang/Runnable;J)Z
+                return-void
+            """
+        )
     }
 }
