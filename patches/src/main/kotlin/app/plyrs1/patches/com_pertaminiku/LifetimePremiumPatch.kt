@@ -25,40 +25,19 @@ val lifetimePremiumPatch = bytecodePatch(
 
     execute {
         /*
-         * Injection point: F2.a.f(BillingResult, List<Purchase>) at instruction index 9
-         * 
-         * Target method signature: f(LT0/f;Ljava/util/List;)V
-         * Parameters:
-         *   p0 = this (F2/a instance)
-         *   p1 = T0/f (BillingResult)
-         *   p2 = List<Purchase> (purchase list from Google Play)
-         * 
-         * Current flow before injection:
-         *   .line 5: invoke-static {p1}, LS1/a->n(...) -> result in p1
-         *   .line 8: invoke-static {p2}, LS1/a->o(...) -> result in p2  
-         *   .line 9: new-instance v0, LQ2/z;
-         *            iput-object p1, v0, LQ2/z->a
-         *            iput-object p2, v0, LQ2/z->b
-         *   ...
-         *   invoke-virtual {p0, v0}, LP2/p->b(Ljava/lang/Object;)V
-         *   return-void
-         * 
-         * We insert BEFORE line 9 to:
-         *   1. Replace p2 with our mock purchase list
-         *   2. Keep billing result intact
-         *   3. Continue normal flow (S1/a.o will convert mock purchases to Q2.v wrappers)
+         * F2.a.f receives List<Purchase>. It immediately converts that list through
+         * S1.a.o into Pigeon Q2.v records. Replacing p2 after that conversion puts
+         * Purchase instances where the Flutter codec requires Q2.v, causing a
+         * ClassCastException when a later platform-channel message is serialized.
+         *
+         * Replace the raw Purchase list before S1.a.o (instruction index 2) so the
+         * app's own converter produces valid Q2.v values.
          */
-        
         QueryPurchasesResponseFingerprint.method.addInstructions(
-            9,
+            2,
             """
                 invoke-static {}, Lapp/plyrs1/extension/PurchaseMockHelper;->buildMockPurchases()Ljava/util/ArrayList;
                 move-result-object p2
-                if-eqz p2, :mock_failure
-                :mock_injected
-                    # Original flow continues normally with p2 now being our mock list
-                :mock_failure
-                    # If injection fails, p2 remains unchanged (original behavior)
             """
         )
     }
