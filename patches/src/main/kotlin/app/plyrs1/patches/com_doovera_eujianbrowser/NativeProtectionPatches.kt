@@ -232,7 +232,7 @@ val disableTouchObscurityDetectionPatch = bytecodePatch(
 /**
  * Removes FLAG_SECURE so screenshots and screen recording work normally.
  *
- * onCreate() sets FLAG_SECURE (0x2000). At the end of onCreate(), we clear it
+ * onCreate() sets FLAG_SECURE (0x2000). In onResume(), we clear it
  * via Window.clearFlags(0x2000).
  */
 @Suppress("unused")
@@ -244,8 +244,8 @@ val removeScreenshotProtectionPatch = bytecodePatch(
     compatibleWith(COMPATIBILITY_EUJIANBROWSER)
 
     execute {
-        ExamActivityOnCreateFingerprint.method.addInstructions(
-            ExamActivityOnCreateFingerprint.method.implementation!!.instructions.size - 1,
+        ExamActivityOnResumeFingerprint.method.addInstructions(
+            0,
             """
                 invoke-virtual {p0}, Landroid/app/Activity;->getWindow()Landroid/view/Window;
                 move-result-object v0

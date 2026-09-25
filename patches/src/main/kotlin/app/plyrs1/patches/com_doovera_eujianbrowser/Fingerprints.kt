@@ -94,6 +94,17 @@ object OnPauseFingerprint : Fingerprint(
 )
 
 /**
+ * ExamActivity.onResume()V
+ * Resumes activity, initializes WebView, re-enables fullscreen UI.
+ */
+object ExamActivityOnResumeFingerprint : Fingerprint(
+    definingClass = "Lcom/doovera/eujianbrowser/ExamActivity;",
+    name = "onResume",
+    returnType = "V",
+    parameters = emptyList()
+)
+
+/**
  * ExamActivity.onWindowFocusChanged(Z)V
  * Schedules a 1500 ms delayed check (Runnable case 5) when focus is lost.
  * If focus has not returned after 1500 ms, triggers "Window lost focus" alarm.
