@@ -48,6 +48,34 @@ object Constants {
     )
 
     /**
+     * Compatibility definition for E-Ujian Browser (com.doovera.eujianbrowser).
+     */
+    val COMPATIBILITY_EUJIANBROWSER = Compatibility(
+        name = "E-Ujian Browser",
+        packageName = "com.doovera.eujianbrowser",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x2196F3,
+        targets = listOf(
+            AppTarget(version = "3.1.3"),
+            AppTarget(version = null, isExperimental = true)
+        )
+    )
+    
+    /**
+     * Compatibility definition for Habitica (com.habitrpg.android.habitica).
+     */
+    val COMPATIBILITY_HABITICA = Compatibility(
+        name = "Habitica",
+        packageName = "com.habitrpg.android.habitica",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0x4B275F,
+        targets = listOf(
+            AppTarget(version = "4.10.5"),
+            AppTarget(version = null, isExperimental = true)
+        )
+    )
+
+    /**
      * Generic example compatibility target.
      */
     val COMPATIBILITY_EXAMPLE = Compatibility(
