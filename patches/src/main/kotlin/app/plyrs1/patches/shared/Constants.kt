@@ -76,6 +76,20 @@ object Constants {
     )
 
     /**
+     * Compatibility definition for GajiHub (com.gajihub.app).
+     */
+    val COMPATIBILITY_GAJIHUB = Compatibility(
+        name = "GajiHub",
+        packageName = "com.gajihub.app",
+        apkFileType = ApkFileType.APK,
+        appIconColor = 0xE53F6A,
+        targets = listOf(
+            AppTarget(version = "2.0.4"),
+            AppTarget(version = null, isExperimental = true)
+        )
+    )
+
+    /**
      * Generic example compatibility target.
      */
     val COMPATIBILITY_EXAMPLE = Compatibility(

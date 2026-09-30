@@ -139,6 +139,40 @@
       "options": []
     },
     {
+      "name": "Bypass Mock Location",
+      "description": "Bypasses mock location and emulator detection in GajiHub by neutralizing Location.isFromMockProvider() flags in React Native location bridges, forcing Build.TYPE user checks to true, and disabling emulator detection in RNDeviceInfo.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.gajihub.app",
+          "name": "GajiHub",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E53F6A",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.0.4",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Bypass Multi-Window Detection",
       "description": "Disables split-screen detection so the exam continues normally in split-screen mode.",
       "default": true,
@@ -502,6 +536,42 @@
           "targets": [
             {
               "version": "1.17.057",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Disable Telemetry",
+      "description": "Disables third-party telemetry, crash reporting, and tracking services in GajiHub. Suppresses Sentry native SDK initialization, OneSignal analytics and device tracking, neutralizes root detection telemetry, and disables Sentry/Firebase background providers.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.gajihub.app",
+          "name": "GajiHub",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E53F6A",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "2.0.4",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
