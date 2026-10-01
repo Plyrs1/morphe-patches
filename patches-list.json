@@ -37,6 +37,40 @@
       "options": []
     },
     {
+      "name": "Allow sideloaded apps",
+      "description": "Bypasses Play Store installation checks, allowing sideloaded third-party apps to appear and run on the Android Auto car head unit.",
+      "default": true,
+      "category": null,
+      "dependencies": [],
+      "compatiblePackages": [
+        {
+          "packageName": "com.google.android.projection.gearhead",
+          "name": "Android Auto",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1A73E8",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.7.663654-release",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": null,
+              "versionCodes": null,
+              "isExperimental": true,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Background Persistence (WakeLock + Foreground Service)",
       "description": "Keeps the exam process alive in the background using a WakeLock-backed foreground Service. Prevents OS from killing the exam when backgrounded or screen turns off. Service restarts automatically via START_STICKY if killed.",
       "default": true,
