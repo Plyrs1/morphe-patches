@@ -17,10 +17,12 @@ Click the button below, or manually add this repo url to Morphe Manager: https:/
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.5.0-dev.2](https://github.com/Plyrs1/morphe-patches/releases/tag/v1.5.0-dev.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;31 patches total
+> **[v1.5.0-dev.3](https://github.com/Plyrs1/morphe-patches/releases/tag/v1.5.0-dev.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;31 patches total
 <details open>
 <summary>📦 E-Ujian Browser&nbsp;&nbsp;•&nbsp;&nbsp;18 patches</summary>
 <br>
+
+**Package name:** `com.doovera.eujianbrowser`
 
 **🎯 Supported versions:**
 
@@ -54,6 +56,8 @@ Click the button below, or manually add this repo url to Morphe Manager: https:/
 <summary>📦 Nusuk&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
+**Package name:** `com.moh.nusukapp`
+
 **🎯 Supported versions:**
 
 | 17.6.2 |
@@ -68,6 +72,8 @@ Click the button below, or manually add this repo url to Morphe Manager: https:/
 <details open>
 <summary>📦 Struk Pom / SPBU&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
+
+**Package name:** `com.ogestudio.strukpertamini`
 
 **🎯 Supported versions:**
 
@@ -86,6 +92,8 @@ Click the button below, or manually add this repo url to Morphe Manager: https:/
 <summary>📦 Habitica&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
+**Package name:** `com.habitrpg.android.habitica`
+
 **🎯 Supported versions:**
 
 | 4.10.5 |
@@ -103,6 +111,8 @@ Click the button below, or manually add this repo url to Morphe Manager: https:/
 <summary>📦 Pertaminiku&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
 
+**Package name:** `com.pertaminiku`
+
 **🎯 Supported versions:**
 
 | 1.0.2 |
@@ -119,6 +129,8 @@ Click the button below, or manually add this repo url to Morphe Manager: https:/
 <details open>
 <summary>📦 Struk POM&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
+
+**Package name:** `com.garnesapps.strukpom`
 
 **🎯 Supported versions:**
 
