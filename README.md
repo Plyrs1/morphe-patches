@@ -8,7 +8,11 @@ Custom patches for Android applications.
 
 ### How to use these patches
 
-Click here to add these patches to Morphe: https://morphe.software/add-source?github=Plyrs1/morphe-patches
+Click the button below, or manually add this repo url to Morphe Manager: https://github.com/Plyrs1/morphe-patches
+
+<a href="https://morphe.software/add-source?github=Plyrs1/morphe-patches">
+  <img src=".github/assets/add-to-morphe.svg" alt="Add to Morphe" height="48">
+</a>
 
 ## 🩹 Patches list
 
