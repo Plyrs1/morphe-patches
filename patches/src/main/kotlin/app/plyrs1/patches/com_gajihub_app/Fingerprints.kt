@@ -3,40 +3,53 @@ package app.plyrs1.patches.com_gajihub_app
 import app.morphe.patcher.Fingerprint
 
 /**
- * Matches LocationSerializationHelper.toWritableMap(Location) [i3/i;->i(Location)]
+ * Matches LocationSerializationHelper.toWritableMap(Location)
  * Serializes Android Location into React Native WritableMap with coordinates and "mocked" flag.
+ * - v2.0.4: Li3/i;->i(Location)
+ * - v2.0.14: LU4/j;->i(Location)
  */
 object LocationSerializationFingerprint : Fingerprint(
-    definingClass = "Li3/i;",
-    name = "i",
     returnType = "Lcom/facebook/react/bridge/WritableMap;",
     parameters = listOf("Landroid/location/Location;"),
     strings = listOf("latitude", "longitude", "coords", "provider", "timestamp", "mocked")
 )
 
 /**
- * Matches MapView location change callback [com/rnmaps/maps/z$k;->a(Location)]
+ * Matches MapView location change callback
  * Serializes location for react-native-maps with "isFromMockProvider" flag.
+ * - v2.0.4: Lcom/rnmaps/maps/z$k;->a(Location)
+ * - v2.0.14: Lcom/rnmaps/maps/c0$e;->a(Location)
  */
 object MapViewLocationChangeFingerprint : Fingerprint(
-    definingClass = "Lcom/rnmaps/maps/z\$k;",
-    name = "a",
     returnType = "V",
     parameters = listOf("Landroid/location/Location;"),
     strings = listOf("coordinate", "isFromMockProvider")
 )
 
 /**
- * Matches Google Play Services / Android client check for User build type [C6/h;->b()]
+ * Matches Google Play Services / Android client check for User build type
  * Checks if Build.TYPE equals "user".
+ * - v2.0.4: LC6/h;->b()Z
+ * - v2.0.14: Lcom/google/android/gms/common/util/g;->b()Z
  */
 object BuildTypeCheckFingerprint : Fingerprint(
-    definingClass = "LC6/h;",
     name = "b",
     returnType = "Z",
+    parameters = emptyList(),
     strings = listOf("user")
 )
 
+/**
+ * Matches OfflineLocationModule.isMock(Location) [com/gajihub/app/OfflineLocationModule;->isMock(Location)Z]
+ * Checks if Location is mock via isMock() (API 31+) or isFromMockProvider() (API <31).
+ * Introduced in v2.0.14.
+ */
+object OfflineLocationIsMockFingerprint : Fingerprint(
+    definingClass = "Lcom/gajihub/app/OfflineLocationModule;",
+    name = "isMock",
+    returnType = "Z",
+    parameters = listOf("Landroid/location/Location;")
+)
 /**
  * Matches RNDeviceModule.isEmulatorSync()
  * Detects emulator environment based on Build fingerprints, models, and hardware strings.
@@ -208,4 +221,136 @@ object CodePushSaveStatusReportForRetryFingerprint : Fingerprint(
     name = "saveStatusReportForRetry",
     returnType = "V",
     parameters = listOf("Lcom/facebook/react/bridge/ReadableMap;")
+)
+
+/**
+ * Matches CodePush bundle file path resolver:
+ * - v2.0.4: com/microsoft/codepush/react/a;->m(String)String
+ * - v2.0.14: com/microsoft/codepush/react/d;->n(String)String
+ * Forces runtime to load solely from assets://index.android.bundle.
+ */
+object CodePushGetJSBundleFileFingerprint : Fingerprint(
+    returnType = "Ljava/lang/String;",
+    parameters = listOf("Ljava/lang/String;"),
+    strings = listOf("assets://"),
+    custom = { method, _ ->
+        method.definingClass.startsWith("Lcom/microsoft/codepush/react/")
+    }
+)
+
+/**
+ * Matches CodePushNativeModule.setJSBundle(...) methods which dynamically switch
+ * React Native's JSBundleLoader to filesystem files.
+ */
+object CodePushSetJSBundleFingerprint : Fingerprint(
+    definingClass = "Lcom/microsoft/codepush/react/CodePushNativeModule;",
+    name = "setJSBundle",
+    returnType = "V"
+)
+
+/**
+ * Matches CodePushNativeModule.downloadUpdate(ReadableMap, boolean, Promise)
+ * Neutralized so remote bundles or diffs are never downloaded.
+ */
+object CodePushDownloadUpdateFingerprint : Fingerprint(
+    definingClass = "Lcom/microsoft/codepush/react/CodePushNativeModule;",
+    name = "downloadUpdate",
+    returnType = "V",
+    parameters = listOf("Lcom/facebook/react/bridge/ReadableMap;", "Z", "Lcom/facebook/react/bridge/Promise;")
+)
+
+/**
+ * Matches CodePushNativeModule.installUpdate(ReadableMap, int, int, Promise)
+ * Neutralized so downloaded updates can never be installed.
+ */
+object CodePushInstallUpdateFingerprint : Fingerprint(
+    definingClass = "Lcom/microsoft/codepush/react/CodePushNativeModule;",
+    name = "installUpdate",
+    returnType = "V",
+    parameters = listOf("Lcom/facebook/react/bridge/ReadableMap;", "I", "I", "Lcom/facebook/react/bridge/Promise;")
+)
+
+/**
+ * Matches CodePushNativeModule.downloadAndReplaceCurrentBundle(String)
+ * Neutralized so full bundle replacement never executes.
+ */
+object CodePushDownloadAndReplaceBundleFingerprint : Fingerprint(
+    definingClass = "Lcom/microsoft/codepush/react/CodePushNativeModule;",
+    name = "downloadAndReplaceCurrentBundle",
+    returnType = "V",
+    parameters = listOf("Ljava/lang/String;")
+)
+
+/**
+ * Matches CodePushNativeModule.getUpdateMetadata(int, Promise)
+ * Forces result to null so JS assumes no pending/current update package exists.
+ */
+object CodePushGetUpdateMetadataFingerprint : Fingerprint(
+    definingClass = "Lcom/microsoft/codepush/react/CodePushNativeModule;",
+    name = "getUpdateMetadata",
+    returnType = "V",
+    parameters = listOf("I", "Lcom/facebook/react/bridge/Promise;")
+)
+
+/**
+ * Matches CodePushNativeModule.getLatestRollbackInfo(Promise)
+ * Resolves null so no rollback packages are queried.
+ */
+object CodePushGetLatestRollbackInfoFingerprint : Fingerprint(
+    definingClass = "Lcom/microsoft/codepush/react/CodePushNativeModule;",
+    name = "getLatestRollbackInfo",
+    returnType = "V",
+    parameters = listOf("Lcom/facebook/react/bridge/Promise;")
+)
+
+/**
+ * Matches CodePushNativeModule.isFailedUpdate(String, Promise)
+ * Resolves false.
+ */
+object CodePushIsFailedUpdateFingerprint : Fingerprint(
+    definingClass = "Lcom/microsoft/codepush/react/CodePushNativeModule;",
+    name = "isFailedUpdate",
+    returnType = "V",
+    parameters = listOf("Ljava/lang/String;", "Lcom/facebook/react/bridge/Promise;")
+)
+
+/**
+ * Matches CodePushNativeModule.isFirstRun(String, Promise)
+ * Resolves false.
+ */
+object CodePushIsFirstRunFingerprint : Fingerprint(
+    definingClass = "Lcom/microsoft/codepush/react/CodePushNativeModule;",
+    name = "isFirstRun",
+    returnType = "V",
+    parameters = listOf("Ljava/lang/String;", "Lcom/facebook/react/bridge/Promise;")
+)
+
+/**
+ * Matches CodePushDialog.showDialog(...)
+ * Neutralized with return-void so OTA update popups are never displayed.
+ */
+object CodePushShowDialogFingerprint : Fingerprint(
+    definingClass = "Lcom/microsoft/codepush/react/CodePushDialog;",
+    name = "showDialog",
+    returnType = "V",
+    parameters = listOf(
+        "Ljava/lang/String;",
+        "Ljava/lang/String;",
+        "Ljava/lang/String;",
+        "Ljava/lang/String;",
+        "Lcom/facebook/react/bridge/Callback;",
+        "Lcom/facebook/react/bridge/Callback;"
+    )
+)
+
+/**
+ * Matches RevopushPatch.a(String, String, String)I [org/revopush/ota/RevopushPatch;->a]
+ * Neutralized to return -1 (error) so differential JS bundle patching never succeeds.
+ * Introduced in v2.0.14.
+ */
+object RevopushPatchApplyFingerprint : Fingerprint(
+    definingClass = "Lorg/revopush/ota/RevopushPatch;",
+    name = "a",
+    returnType = "I",
+    parameters = listOf("Ljava/lang/String;", "Ljava/lang/String;", "Ljava/lang/String;")
 )

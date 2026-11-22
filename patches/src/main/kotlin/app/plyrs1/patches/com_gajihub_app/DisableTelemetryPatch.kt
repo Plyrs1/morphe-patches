@@ -118,7 +118,7 @@ val disableTelemetryPatch = bytecodePatch(
 
     execute {
         // 1. RNSentryModule.initNativeSdk(ReadableMap, Promise) -> immediately resolve true and return
-        RNSentryInitNativeSdkFingerprint.method.addInstructions(
+        RNSentryInitNativeSdkFingerprint.methodOrNull?.addInstructions(
             0,
             """
                 sget-object v0, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
@@ -127,8 +127,8 @@ val disableTelemetryPatch = bytecodePatch(
             """
         )
 
-        // 2. OneSignal.isRooted() -> return false (0x0)
-        OneSignalIsRootedFingerprint.method.addInstructions(
+        // 2. OneSignal.isRooted() -> return false (0x0) (v2.0.4)
+        OneSignalIsRootedFingerprint.methodOrNull?.addInstructions(
             0,
             """
                 const/4 v0, 0x0
@@ -137,7 +137,7 @@ val disableTelemetryPatch = bytecodePatch(
         )
 
         // 3. RNSentryModule.captureEnvelope(String, ReadableMap, Promise) -> immediately resolve true and return
-        RNSentryCaptureEnvelopeFingerprint.method.addInstructions(
+        RNSentryCaptureEnvelopeFingerprint.methodOrNull?.addInstructions(
             0,
             """
                 sget-object v0, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
@@ -147,7 +147,7 @@ val disableTelemetryPatch = bytecodePatch(
         )
 
         // 4. RNSentryModule.captureScreenshot(Promise) -> immediately resolve null and return
-        RNSentryCaptureScreenshotFingerprint.method.addInstructions(
+        RNSentryCaptureScreenshotFingerprint.methodOrNull?.addInstructions(
             0,
             """
                 const/4 v0, 0x0
@@ -157,7 +157,7 @@ val disableTelemetryPatch = bytecodePatch(
         )
 
         // 5. RNSentryModule.fetchViewHierarchy(Promise) -> immediately resolve null and return
-        RNSentryFetchViewHierarchyFingerprint.method.addInstructions(
+        RNSentryFetchViewHierarchyFingerprint.methodOrNull?.addInstructions(
             0,
             """
                 const/4 v0, 0x0
@@ -166,8 +166,8 @@ val disableTelemetryPatch = bytecodePatch(
             """
         )
 
-        // 6. OneSignal location sharing -> force isShared() to false
-        OneSignalLocationIsSharedFingerprint.method.addInstructions(
+        // 6. OneSignal location sharing -> force isShared() to false (v2.0.4)
+        OneSignalLocationIsSharedFingerprint.methodOrNull?.addInstructions(
             0,
             """
                 const/4 v0, 0x0
@@ -175,36 +175,36 @@ val disableTelemetryPatch = bytecodePatch(
             """
         )
 
-        // 7. OneSignal location tracker -> neutralize start() and setShared()
-        OneSignalLocationStartFingerprint.method.addInstructions(
+        // 7. OneSignal location tracker -> neutralize start() and setShared() (v2.0.4)
+        OneSignalLocationStartFingerprint.methodOrNull?.addInstructions(
             0,
             "return-void"
         )
-        OneSignalLocationSetSharedFingerprint.method.addInstructions(
+        OneSignalLocationSetSharedFingerprint.methodOrNull?.addInstructions(
             0,
             "return-void"
         )
 
-        // 8. RNOneSignal outcomes -> neutralize addOutcome, addOutcomeWithValue, addUniqueOutcome
-        RNOneSignalAddOutcomeFingerprint.method.addInstructions(
+        // 8. RNOneSignal outcomes -> neutralize addOutcome, addOutcomeWithValue, addUniqueOutcome (v2.0.4)
+        RNOneSignalAddOutcomeFingerprint.methodOrNull?.addInstructions(
             0,
             "return-void"
         )
-        RNOneSignalAddOutcomeWithValueFingerprint.method.addInstructions(
+        RNOneSignalAddOutcomeWithValueFingerprint.methodOrNull?.addInstructions(
             0,
             "return-void"
         )
-        RNOneSignalAddUniqueOutcomeFingerprint.method.addInstructions(
+        RNOneSignalAddUniqueOutcomeFingerprint.methodOrNull?.addInstructions(
             0,
             "return-void"
         )
 
         // 9. CodePush deployment & rollback telemetry -> neutralize recordStatusReported, saveStatusReportForRetry
-        CodePushRecordStatusReportedFingerprint.method.addInstructions(
+        CodePushRecordStatusReportedFingerprint.methodOrNull?.addInstructions(
             0,
             "return-void"
         )
-        CodePushSaveStatusReportForRetryFingerprint.method.addInstructions(
+        CodePushSaveStatusReportForRetryFingerprint.methodOrNull?.addInstructions(
             0,
             "return-void"
         )

@@ -93,5 +93,14 @@ val bypassMockLocationPatch = bytecodePatch(
                 return-object v0
             """
         )
+
+        // 7. In OfflineLocationModule.isMock(Location), return false (0x0) (v2.0.14+)
+        OfflineLocationIsMockFingerprint.methodOrNull?.addInstructions(
+            0,
+            """
+                const/4 v0, 0x0
+                return v0
+            """
+        )
     }
 }
