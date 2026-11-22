@@ -1,3 +1,9 @@
+## [1.6.0-dev.4](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.3...v1.6.0-dev.4) (2026-11-22)
+
+### ✨ New Features
+
+* **com_gajihub_app:** add v2.0.14 support and remote update suppression ([28417d5](https://github.com/Plyrs1/morphe-patches/commit/28417d566a5d2246a1d4e40d8ba7b47cd5f2c98a))
+
 ## [1.6.0-dev.3](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.2...v1.6.0-dev.3) (2026-11-22)
 
 ### ✨ New Features
