@@ -90,3 +90,122 @@ object RNSentryInitNativeSdkFingerprint : Fingerprint(
     returnType = "V",
     parameters = listOf("Lcom/facebook/react/bridge/ReadableMap;", "Lcom/facebook/react/bridge/Promise;")
 )
+
+/**
+ * Matches RNSentryModule.captureEnvelope(String, ReadableMap, Promise)
+ * Suppresses JS crash and error envelope submission to Sentry.
+ */
+object RNSentryCaptureEnvelopeFingerprint : Fingerprint(
+    definingClass = "Lio/sentry/react/RNSentryModule;",
+    name = "captureEnvelope",
+    returnType = "V",
+    parameters = listOf("Ljava/lang/String;", "Lcom/facebook/react/bridge/ReadableMap;", "Lcom/facebook/react/bridge/Promise;")
+)
+
+/**
+ * Matches RNSentryModule.captureScreenshot(Promise)
+ * Suppresses Sentry automatic screenshot capture on error.
+ */
+object RNSentryCaptureScreenshotFingerprint : Fingerprint(
+    definingClass = "Lio/sentry/react/RNSentryModule;",
+    name = "captureScreenshot",
+    returnType = "V",
+    parameters = listOf("Lcom/facebook/react/bridge/Promise;")
+)
+
+/**
+ * Matches RNSentryModule.fetchViewHierarchy(Promise)
+ * Suppresses Sentry UI view tree scraping on error.
+ */
+object RNSentryFetchViewHierarchyFingerprint : Fingerprint(
+    definingClass = "Lio/sentry/react/RNSentryModule;",
+    name = "fetchViewHierarchy",
+    returnType = "V",
+    parameters = listOf("Lcom/facebook/react/bridge/Promise;")
+)
+
+/**
+ * Matches OneSignal location sharing flag [com/onesignal/location/internal/a;->isShared()Z]
+ * Forced to false so OneSignal never collects or beacons GPS coordinates.
+ */
+object OneSignalLocationIsSharedFingerprint : Fingerprint(
+    definingClass = "Lcom/onesignal/location/internal/a;",
+    name = "isShared",
+    returnType = "Z"
+)
+
+/**
+ * Matches OneSignal location tracker startup [com/onesignal/location/internal/a;->start()V]
+ * Neutralized so OneSignal does not subscribe to location permissions.
+ */
+object OneSignalLocationStartFingerprint : Fingerprint(
+    definingClass = "Lcom/onesignal/location/internal/a;",
+    name = "start",
+    returnType = "V"
+)
+
+/**
+ * Matches OneSignal location sharing setter [com/onesignal/location/internal/a;->setShared(Z)V]
+ * Neutralized so location sharing cannot be enabled.
+ */
+object OneSignalLocationSetSharedFingerprint : Fingerprint(
+    definingClass = "Lcom/onesignal/location/internal/a;",
+    name = "setShared",
+    returnType = "V",
+    parameters = listOf("Z")
+)
+
+/**
+ * Matches RNOneSignal.addOutcome(String)
+ * Suppresses user engagement outcome telemetry to OneSignal.
+ */
+object RNOneSignalAddOutcomeFingerprint : Fingerprint(
+    definingClass = "Lcom/onesignal/rnonesignalandroid/RNOneSignal;",
+    name = "addOutcome",
+    returnType = "V",
+    parameters = listOf("Ljava/lang/String;")
+)
+
+/**
+ * Matches RNOneSignal.addOutcomeWithValue(String, float)
+ * Suppresses user conversion value telemetry to OneSignal.
+ */
+object RNOneSignalAddOutcomeWithValueFingerprint : Fingerprint(
+    definingClass = "Lcom/onesignal/rnonesignalandroid/RNOneSignal;",
+    name = "addOutcomeWithValue",
+    returnType = "V",
+    parameters = listOf("Ljava/lang/String;", "F")
+)
+
+/**
+ * Matches RNOneSignal.addUniqueOutcome(String)
+ * Suppresses unique outcome telemetry to OneSignal.
+ */
+object RNOneSignalAddUniqueOutcomeFingerprint : Fingerprint(
+    definingClass = "Lcom/onesignal/rnonesignalandroid/RNOneSignal;",
+    name = "addUniqueOutcome",
+    returnType = "V",
+    parameters = listOf("Ljava/lang/String;")
+)
+
+/**
+ * Matches CodePushNativeModule.recordStatusReported(ReadableMap)
+ * Suppresses OTA deployment status reporting to Microsoft AppCenter.
+ */
+object CodePushRecordStatusReportedFingerprint : Fingerprint(
+    definingClass = "Lcom/microsoft/codepush/react/CodePushNativeModule;",
+    name = "recordStatusReported",
+    returnType = "V",
+    parameters = listOf("Lcom/facebook/react/bridge/ReadableMap;")
+)
+
+/**
+ * Matches CodePushNativeModule.saveStatusReportForRetry(ReadableMap)
+ * Suppresses OTA deployment retry telemetry to Microsoft AppCenter.
+ */
+object CodePushSaveStatusReportForRetryFingerprint : Fingerprint(
+    definingClass = "Lcom/microsoft/codepush/react/CodePushNativeModule;",
+    name = "saveStatusReportForRetry",
+    returnType = "V",
+    parameters = listOf("Lcom/facebook/react/bridge/ReadableMap;")
+)

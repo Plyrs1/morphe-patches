@@ -135,5 +135,78 @@ val disableTelemetryPatch = bytecodePatch(
                 return v0
             """
         )
+
+        // 3. RNSentryModule.captureEnvelope(String, ReadableMap, Promise) -> immediately resolve true and return
+        RNSentryCaptureEnvelopeFingerprint.method.addInstructions(
+            0,
+            """
+                sget-object v0, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
+                invoke-interface {p3, v0}, Lcom/facebook/react/bridge/Promise;->resolve(Ljava/lang/Object;)V
+                return-void
+            """
+        )
+
+        // 4. RNSentryModule.captureScreenshot(Promise) -> immediately resolve null and return
+        RNSentryCaptureScreenshotFingerprint.method.addInstructions(
+            0,
+            """
+                const/4 v0, 0x0
+                invoke-interface {p1, v0}, Lcom/facebook/react/bridge/Promise;->resolve(Ljava/lang/Object;)V
+                return-void
+            """
+        )
+
+        // 5. RNSentryModule.fetchViewHierarchy(Promise) -> immediately resolve null and return
+        RNSentryFetchViewHierarchyFingerprint.method.addInstructions(
+            0,
+            """
+                const/4 v0, 0x0
+                invoke-interface {p1, v0}, Lcom/facebook/react/bridge/Promise;->resolve(Ljava/lang/Object;)V
+                return-void
+            """
+        )
+
+        // 6. OneSignal location sharing -> force isShared() to false
+        OneSignalLocationIsSharedFingerprint.method.addInstructions(
+            0,
+            """
+                const/4 v0, 0x0
+                return v0
+            """
+        )
+
+        // 7. OneSignal location tracker -> neutralize start() and setShared()
+        OneSignalLocationStartFingerprint.method.addInstructions(
+            0,
+            "return-void"
+        )
+        OneSignalLocationSetSharedFingerprint.method.addInstructions(
+            0,
+            "return-void"
+        )
+
+        // 8. RNOneSignal outcomes -> neutralize addOutcome, addOutcomeWithValue, addUniqueOutcome
+        RNOneSignalAddOutcomeFingerprint.method.addInstructions(
+            0,
+            "return-void"
+        )
+        RNOneSignalAddOutcomeWithValueFingerprint.method.addInstructions(
+            0,
+            "return-void"
+        )
+        RNOneSignalAddUniqueOutcomeFingerprint.method.addInstructions(
+            0,
+            "return-void"
+        )
+
+        // 9. CodePush deployment & rollback telemetry -> neutralize recordStatusReported, saveStatusReportForRetry
+        CodePushRecordStatusReportedFingerprint.method.addInstructions(
+            0,
+            "return-void"
+        )
+        CodePushSaveStatusReportForRetryFingerprint.method.addInstructions(
+            0,
+            "return-void"
+        )
     }
 }
