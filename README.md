@@ -17,16 +17,17 @@ Click the button below, or manually add this repo url to Morphe Manager: https:/
 ## 🩹 Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.5.0](https://github.com/Plyrs1/morphe-patches/releases/tag/v1.5.0)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`main`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**31 patches** across **6 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
+> **[v1.6.0-dev.1](https://github.com/Plyrs1/morphe-patches/releases/tag/v1.6.0-dev.1)**&nbsp;&nbsp;&middot;&nbsp;&nbsp;`dev`&nbsp;&nbsp;&middot;&nbsp;&nbsp;**32 patches** across **7 apps**&nbsp;&nbsp;&middot;&nbsp;&nbsp;[Full details](PATCHES.md)
 
 | # | App | Patches | Version | Package |
 |---|---|---|---|---|
-| 1 | [**E-Ujian Browser**](PATCHES.md#e-ujian-browser-comdooveraeujianbrowser) | 18 | `3.1.3` | [`com.doovera.eujianbrowser`](https://play.google.com/store/apps/details?id=com.doovera.eujianbrowser) |
-| 2 | [**Habitica**](PATCHES.md#habitica-comhabitrpgandroidhabitica) | 3 | `4.10.5` | [`com.habitrpg.android.habitica`](https://play.google.com/store/apps/details?id=com.habitrpg.android.habitica) |
-| 3 | [**Nusuk**](PATCHES.md#nusuk-commohnusukapp) | 1 | `17.6.2` | [`com.moh.nusukapp`](https://play.google.com/store/apps/details?id=com.moh.nusukapp) |
-| 4 | [**Pertaminiku**](PATCHES.md#pertaminiku-compertaminiku) | 3 | `1.0.2` | [`com.pertaminiku`](https://play.google.com/store/apps/details?id=com.pertaminiku) |
-| 5 | [**Struk POM**](PATCHES.md#struk-pom-comgarnesappsstrukpom) | 3 | `1.17.057` | [`com.garnesapps.strukpom`](https://play.google.com/store/apps/details?id=com.garnesapps.strukpom) |
-| 6 | [**Struk Pom / SPBU**](PATCHES.md#struk-pom-spbu-comogestudiostrukpertamini) | 3 | `1.2.7` | [`com.ogestudio.strukpertamini`](https://play.google.com/store/apps/details?id=com.ogestudio.strukpertamini) |
+| 1 | [**Android Auto**](PATCHES.md#android-auto-comgoogleandroidprojectiongearhead) | 1 | `17.7.663654-release` | [`com.google.android.projection.gearhead`](https://play.google.com/store/apps/details?id=com.google.android.projection.gearhead) |
+| 2 | [**E-Ujian Browser**](PATCHES.md#e-ujian-browser-comdooveraeujianbrowser) | 18 | `3.1.3` | [`com.doovera.eujianbrowser`](https://play.google.com/store/apps/details?id=com.doovera.eujianbrowser) |
+| 3 | [**Habitica**](PATCHES.md#habitica-comhabitrpgandroidhabitica) | 3 | `4.10.5` | [`com.habitrpg.android.habitica`](https://play.google.com/store/apps/details?id=com.habitrpg.android.habitica) |
+| 4 | [**Nusuk**](PATCHES.md#nusuk-commohnusukapp) | 1 | `17.6.2` | [`com.moh.nusukapp`](https://play.google.com/store/apps/details?id=com.moh.nusukapp) |
+| 5 | [**Pertaminiku**](PATCHES.md#pertaminiku-compertaminiku) | 3 | `1.0.2` | [`com.pertaminiku`](https://play.google.com/store/apps/details?id=com.pertaminiku) |
+| 6 | [**Struk POM**](PATCHES.md#struk-pom-comgarnesappsstrukpom) | 3 | `1.17.057` | [`com.garnesapps.strukpom`](https://play.google.com/store/apps/details?id=com.garnesapps.strukpom) |
+| 7 | [**Struk Pom / SPBU**](PATCHES.md#struk-pom-spbu-comogestudiostrukpertamini) | 3 | `1.2.7` | [`com.ogestudio.strukpertamini`](https://play.google.com/store/apps/details?id=com.ogestudio.strukpertamini) |
 <!-- PATCHES_END -->
 
 ### 🛠️ Building locally

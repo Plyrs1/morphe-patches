@@ -1,3 +1,9 @@
+## [1.6.0-dev.1](https://github.com/Plyrs1/morphe-patches/compare/v1.5.0...v1.6.0-dev.1) (2026-11-22)
+
+### ✨ New Features
+
+* **com_google_android_projection_gearhead:** re-add android auto patch ([3895091](https://github.com/Plyrs1/morphe-patches/commit/3895091e2b6f392167d851f1404aaf7086b5da58))
+
 ## [1.5.0](https://github.com/Plyrs1/morphe-patches/compare/v1.4.0...v1.5.0) (2026-11-22)
 
 ### ✨ New Features
