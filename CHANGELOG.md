@@ -1,3 +1,14 @@
+## [1.6.0-dev.2](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.1...v1.6.0-dev.2) (2026-11-22)
+
+### ✨ New Features
+
+* **com_gajihub_app:** add comprehensive telemetry suppression ([a52625e](https://github.com/Plyrs1/morphe-patches/commit/a52625e297540f7d652265b54c4ecb0d6c47bbc4))
+* **com_gajihub_app:** add mock location bypass and telemetry suppression patches ([afd1a31](https://github.com/Plyrs1/morphe-patches/commit/afd1a316ba2cf2650bcd17a756cfffaaa0bf53d7))
+
+### 🐛 Bug Fixes
+
+* **com_gajihub_app:** fix login crash and SoLoader ARM64 emulation ([cc27fc7](https://github.com/Plyrs1/morphe-patches/commit/cc27fc721fb55574bf7d8c0d852b3a70cf2a8232))
+
 ## [1.6.0-dev.1](https://github.com/Plyrs1/morphe-patches/compare/v1.5.0...v1.6.0-dev.1) (2026-11-22)
 
 ### ✨ New Features
