@@ -127,16 +127,7 @@ val disableTelemetryPatch = bytecodePatch(
             """
         )
 
-        // 2. OneSignal.initWithContext(Context, String) -> return false (0x0)
-        OneSignalInitWithContextFingerprint.method.addInstructions(
-            0,
-            """
-                const/4 v0, 0x0
-                return v0
-            """
-        )
-
-        // 3. OneSignal.isRooted() -> return false (0x0)
+        // 2. OneSignal.isRooted() -> return false (0x0)
         OneSignalIsRootedFingerprint.method.addInstructions(
             0,
             """

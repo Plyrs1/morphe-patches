@@ -71,14 +71,13 @@ object OneSignalIsRootedFingerprint : Fingerprint(
 )
 
 /**
- * Matches OneSignal SDK initialization [com/onesignal/internal/a;->initWithContext(Context, String)]
- * Neutralized to prevent OneSignal push/analytics SDK initialization and device tracking.
+ * Matches SoLoader SysUtil.j() returning supported ABIs [com/facebook/soloader/SysUtil;->j()[Ljava/lang/String;]
+ * Overridden to return ["arm64-v8a"] so DirectApkSoSource finds native libraries on x86_64 emulators.
  */
-object OneSignalInitWithContextFingerprint : Fingerprint(
-    definingClass = "Lcom/onesignal/internal/a;",
-    name = "initWithContext",
-    returnType = "Z",
-    parameters = listOf("Landroid/content/Context;", "Ljava/lang/String;")
+object SoLoaderGetSupportedAbisFingerprint : Fingerprint(
+    definingClass = "Lcom/facebook/soloader/SysUtil\$MarshmallowSysdeps;",
+    name = "getSupportedAbis",
+    returnType = "[Ljava/lang/String;"
 )
 
 /**

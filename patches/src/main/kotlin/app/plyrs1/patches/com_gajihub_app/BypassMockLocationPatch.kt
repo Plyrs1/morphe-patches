@@ -80,5 +80,18 @@ val bypassMockLocationPatch = bytecodePatch(
                 return-void
             """
         )
+
+        // 6. In SoLoader SysUtil.j(), return ["arm64-v8a"] for ARM translation in x86_64 emulators
+        SoLoaderGetSupportedAbisFingerprint.method.addInstructions(
+            0,
+            """
+                const/4 v0, 0x1
+                new-array v0, v0, [Ljava/lang/String;
+                const/4 v1, 0x0
+                const-string v2, "arm64-v8a"
+                aput-object v2, v0, v1
+                return-object v0
+            """
+        )
     }
 }
