@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "1.6.0-dev.2",
+  "version": "1.6.0-dev.3",
   "patches": [
     {
       "name": "Allow System UI",
@@ -501,6 +501,13 @@
               "description": null
             },
             {
+              "version": "4.11.2",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
               "version": null,
               "versionCodes": null,
               "isExperimental": true,
@@ -854,7 +861,7 @@
     },
     {
       "name": "Instant Armoire Reward",
-      "description": "Shows the Armoire ad button and instantly grants the reward without loading an ad. The existing per-session single-use guard is preserved.",
+      "description": "Grants free daily Armoire rolls without viewing ads or requiring a paid subscription. In versions with rewarded ads (<= 4.10.5), bypasses video playback. In 4.11.2+, unlocks the subscriber free roll.",
       "default": true,
       "category": null,
       "compatiblePackages": [
@@ -869,6 +876,13 @@
           "targets": [
             {
               "version": "4.10.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "4.11.2",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1107,6 +1121,13 @@
           "targets": [
             {
               "version": "4.10.5",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "4.11.2",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,

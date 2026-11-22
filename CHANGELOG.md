@@ -1,3 +1,9 @@
+## [1.6.0-dev.3](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.2...v1.6.0-dev.3) (2026-11-22)
+
+### ✨ New Features
+
+* **com_habitrpg_android_habitica:** add Habitica 4.11.2 support and subscriber free armoire roll ([a24250c](https://github.com/Plyrs1/morphe-patches/commit/a24250c8a1ad5c45e94e79aa036bca71fa87baaf))
+
 ## [1.6.0-dev.2](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.1...v1.6.0-dev.2) (2026-11-22)
 
 ### ✨ New Features
