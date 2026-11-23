@@ -1,3 +1,9 @@
+## [1.6.0-dev.6](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.5...v1.6.0-dev.6) (2026-11-23)
+
+### ✨ New Features
+
+* **com_gajihub_app:** add Replace Google Maps API Key patch with stringOption ([3e02110](https://github.com/Plyrs1/morphe-patches/commit/3e021106782e05d32e360a5749b3ae1afc5bb0a6))
+
 ## [1.6.0-dev.5](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.4...v1.6.0-dev.5) (2026-11-23)
 
 ### 🐛 Bug Fixes
