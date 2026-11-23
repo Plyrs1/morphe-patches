@@ -1,3 +1,9 @@
+## [1.6.0-dev.5](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.4...v1.6.0-dev.5) (2026-11-23)
+
+### 🐛 Bug Fixes
+
+* **com_gajihub_app:** neutralize Sentry providers in bytecode and preserve FirebaseInitProvider ([8b0f090](https://github.com/Plyrs1/morphe-patches/commit/8b0f09080b193e2b7b69b3d27dd740b9e4619cb2))
+
 ## [1.6.0-dev.4](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.3...v1.6.0-dev.4) (2026-11-22)
 
 ### ✨ New Features
