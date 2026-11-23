@@ -354,3 +354,25 @@ object RevopushPatchApplyFingerprint : Fingerprint(
     returnType = "I",
     parameters = listOf("Ljava/lang/String;", "Ljava/lang/String;", "Ljava/lang/String;")
 )
+
+/**
+ * Matches SentryInitProvider.onCreate()Z
+ * Neutralized in bytecode so Sentry never auto-initializes on cold start without touching AndroidManifest.xml.
+ */
+object SentryInitProviderOnCreateFingerprint : Fingerprint(
+    definingClass = "Lio/sentry/android/core/SentryInitProvider;",
+    name = "onCreate",
+    returnType = "Z",
+    parameters = emptyList()
+)
+
+/**
+ * Matches SentryPerformanceProvider.onCreate()Z
+ * Neutralized in bytecode so Sentry never starts app-start/frame performance tracking on cold start.
+ */
+object SentryPerformanceProviderOnCreateFingerprint : Fingerprint(
+    definingClass = "Lio/sentry/android/core/SentryPerformanceProvider;",
+    name = "onCreate",
+    returnType = "Z",
+    parameters = emptyList()
+)

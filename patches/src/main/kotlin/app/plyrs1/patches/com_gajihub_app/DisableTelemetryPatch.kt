@@ -6,105 +6,6 @@ import app.morphe.patcher.patch.resourcePatch
 import app.plyrs1.patches.shared.Constants.COMPATIBILITY_GAJIHUB
 import org.w3c.dom.Element
 
-/**
- * Manifest modifications for Disable Telemetry:
- * - Injects meta-data tags to disable auto-initialization of Sentry, Firebase, and MLKit
- * - Disables SentryInitProvider and SentryPerformanceProvider
- * - Disables FirebaseInitProvider and ComponentDiscoveryService
- * - Disables OneSignal broadcast receivers, services, and sync tasks
- */
-private val disableTelemetryManifestPatch = resourcePatch(
-    name = null,
-    description = "Internal: Telemetry suppression metadata, providers, and service disabling in AndroidManifest.xml",
-    default = true
-) {
-    compatibleWith(COMPATIBILITY_GAJIHUB)
-
-    execute {
-        document("AndroidManifest.xml").use { doc ->
-            val manifest = doc.documentElement
-            val application = manifest.getElementsByTagName("application").item(0) as Element
-
-            // 1. Meta-data flags for Sentry & Firebase auto-init suppression
-            val metaDataFlags = mapOf(
-                "io.sentry.auto-init" to "false",
-                "firebase_crashlytics_collection_enabled" to "false",
-                "firebase_analytics_collection_enabled" to "false",
-                "firebase_performance_collection_enabled" to "false",
-                "firebase_sessions_enabled" to "false"
-            )
-
-            val existingMetaData = application.getElementsByTagName("meta-data")
-            val existingMetaMap = mutableMapOf<String, Element>()
-            for (i in 0 until existingMetaData.length) {
-                val elem = existingMetaData.item(i) as? Element ?: continue
-                val name = elem.getAttribute("android:name")
-                if (name.isNotEmpty()) {
-                    existingMetaMap[name] = elem
-                }
-            }
-
-            for ((name, value) in metaDataFlags) {
-                val elem = existingMetaMap[name]
-                if (elem != null) {
-                    elem.setAttribute("android:value", value)
-                } else {
-                    val newElem = doc.createElement("meta-data")
-                    newElem.setAttribute("android:name", name)
-                    newElem.setAttribute("android:value", value)
-                    application.appendChild(newElem)
-                }
-            }
-
-            // 2. Disable Telemetry ContentProviders (Sentry & Firebase)
-            val providersToDisable = setOf(
-                "io.sentry.android.core.SentryInitProvider",
-                "io.sentry.android.core.SentryPerformanceProvider",
-                "com.google.firebase.provider.FirebaseInitProvider"
-            )
-            val providers = application.getElementsByTagName("provider")
-            for (i in 0 until providers.length) {
-                val p = providers.item(i) as? Element ?: continue
-                if (p.getAttribute("android:name") in providersToDisable) {
-                    p.setAttribute("android:enabled", "false")
-                }
-            }
-
-            // 3. Disable OneSignal and Firebase background services
-            val servicesToDisable = setOf(
-                "com.onesignal.core.services.SyncJobService",
-                "com.onesignal.notifications.services.HmsMessageServiceOneSignal",
-                "com.google.firebase.components.ComponentDiscoveryService",
-                "com.google.android.datatransport.runtime.backends.TransportBackendDiscovery",
-                "com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
-            )
-            val services = application.getElementsByTagName("service")
-            for (i in 0 until services.length) {
-                val s = services.item(i) as? Element ?: continue
-                if (s.getAttribute("android:name") in servicesToDisable) {
-                    s.setAttribute("android:enabled", "false")
-                }
-            }
-
-            // 4. Disable OneSignal broadcast receivers
-            val receiversToDisable = setOf(
-                "com.onesignal.notifications.receivers.FCMBroadcastReceiver",
-                "com.onesignal.notifications.receivers.NotificationDismissReceiver",
-                "com.onesignal.notifications.receivers.BootUpReceiver",
-                "com.onesignal.notifications.receivers.UpgradeReceiver",
-                "com.google.firebase.iid.FirebaseInstanceIdReceiver"
-            )
-            val receivers = application.getElementsByTagName("receiver")
-            for (i in 0 until receivers.length) {
-                val r = receivers.item(i) as? Element ?: continue
-                if (r.getAttribute("android:name") in receiversToDisable) {
-                    r.setAttribute("android:enabled", "false")
-                }
-            }
-        }
-    }
-}
-
 @Suppress("unused")
 val disableTelemetryPatch = bytecodePatch(
     name = "Disable Telemetry",
@@ -114,7 +15,6 @@ val disableTelemetryPatch = bytecodePatch(
     default = true
 ) {
     compatibleWith(COMPATIBILITY_GAJIHUB)
-    dependsOn(disableTelemetryManifestPatch)
 
     execute {
         // 1. RNSentryModule.initNativeSdk(ReadableMap, Promise) -> immediately resolve true and return
@@ -165,6 +65,7 @@ val disableTelemetryPatch = bytecodePatch(
                 return-void
             """
         )
+        //
 
         // 6. OneSignal location sharing -> force isShared() to false (v2.0.4)
         OneSignalLocationIsSharedFingerprint.methodOrNull?.addInstructions(
@@ -198,7 +99,7 @@ val disableTelemetryPatch = bytecodePatch(
             0,
             "return-void"
         )
-
+        //
         // 9. CodePush deployment & rollback telemetry -> neutralize recordStatusReported, saveStatusReportForRetry
         CodePushRecordStatusReportedFingerprint.methodOrNull?.addInstructions(
             0,
@@ -208,5 +109,22 @@ val disableTelemetryPatch = bytecodePatch(
             0,
             "return-void"
         )
+
+        // 10. Sentry cold-start ContentProviders -> neutralize onCreate()Z without touching AndroidManifest.xml
+        SentryInitProviderOnCreateFingerprint.methodOrNull?.addInstructions(
+            0,
+            """
+                const/4 v0, 0x1
+                return v0
+            """
+        )
+        SentryPerformanceProviderOnCreateFingerprint.methodOrNull?.addInstructions(
+            0,
+            """
+                const/4 v0, 0x1
+                return v0
+            """
+        )
+        //
     }
 }
