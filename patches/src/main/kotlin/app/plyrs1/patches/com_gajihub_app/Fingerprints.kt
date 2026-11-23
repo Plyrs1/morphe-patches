@@ -376,3 +376,34 @@ object SentryPerformanceProviderOnCreateFingerprint : Fingerprint(
     returnType = "Z",
     parameters = emptyList()
 )
+
+/**
+ * Matches RNBackgroundActionsTask.p(Context, b) -> Notification
+ * Builds the foreground service notification for live tracking.
+ */
+object RnBackgroundActionsNotificationFingerprint : Fingerprint(
+    definingClass = "Lcom/asterinet/react/bgactions/RNBackgroundActionsTask;",
+    name = "p",
+    returnType = "Landroid/app/Notification;"
+)
+
+/**
+ * Matches NetworkingModule.sendRequestInternal(...)
+ * Intercepts HTTP requests to count/gate /hr/locationTrackings/employees and capture auth headers.
+ */
+object NetworkingModuleSendRequestFingerprint : Fingerprint(
+    definingClass = "Lcom/facebook/react/modules/network/NetworkingModule;",
+    name = "sendRequestInternal",
+    returnType = "V",
+    parameters = listOf(
+        "Ljava/lang/String;",
+        "Ljava/lang/String;",
+        "I",
+        "Lcom/facebook/react/bridge/ReadableArray;",
+        "Lcom/facebook/react/bridge/ReadableMap;",
+        "Ljava/lang/String;",
+        "Z",
+        "I",
+        "Z"
+    )
+)
