@@ -1,3 +1,9 @@
+## [1.6.0-dev.7](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.6...v1.6.0-dev.7) (2026-11-23)
+
+### ✨ New Features
+
+* **com_gajihub_app:** add Live Tracking Controls patch ([99cd7de](https://github.com/Plyrs1/morphe-patches/commit/99cd7dec4c319ebe054c0d51b38a4528fd7b3680))
+
 ## [1.6.0-dev.6](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.5...v1.6.0-dev.6) (2026-11-23)
 
 ### ✨ New Features
