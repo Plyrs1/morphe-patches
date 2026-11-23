@@ -34,9 +34,15 @@ public final class TrackingControlHelper {
 
     private TrackingControlHelper() {}
 
+    private static Context safeAppContext(Context context) {
+        if (context == null) return appContext;
+        Context app = context.getApplicationContext();
+        return app != null ? app : context;
+    }
+
     public static void setContext(Context context) {
         if (context != null) {
-            appContext = context.getApplicationContext();
+            appContext = safeAppContext(context);
             ensureReceiverRegistered(appContext);
         }
     }
@@ -45,7 +51,7 @@ public final class TrackingControlHelper {
         if (receiverRegistered || context == null) {
             return;
         }
-        Context ctx = context.getApplicationContext();
+        Context ctx = safeAppContext(context);
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context c, Intent intent) {
@@ -78,7 +84,7 @@ public final class TrackingControlHelper {
         if (context == null || notification == null) {
             return notification;
         }
-        appContext = context.getApplicationContext();
+        appContext = safeAppContext(context);
         ensureReceiverRegistered(appContext);
         lastOriginalNotification = notification;
 
@@ -111,7 +117,7 @@ public final class TrackingControlHelper {
     }
 
     public static void refreshNotification(Context context) {
-        Context ctx = context != null ? context.getApplicationContext() : appContext;
+        Context ctx = safeAppContext(context);
         if (ctx == null || lastOriginalNotification == null) {
             return;
         }
@@ -139,9 +145,9 @@ public final class TrackingControlHelper {
             captureAuthAndBaseUrl(url, headersObj);
         }
 
-        if ("POST".equalsIgnoreCase(method) && url != null && url.contains("/hr/locationTrackings/employees")) {
+        if ("POST".equalsIgnoreCase(method) && isTrackingSubmitUrl(url)) {
             if (paused) {
-                emitSyntheticOk(reactContextObj, requestId);
+                emitSyntheticOk(reactContextObj, requestId, url);
                 return true;
             } else {
                 pushedCount++;
@@ -189,21 +195,34 @@ public final class TrackingControlHelper {
         }
     }
 
-    private static void emitSyntheticOk(Object reactContextObj, int requestId) {
+    private static boolean isTrackingSubmitUrl(String url) {
+        if (url == null) return false;
+        return url.endsWith("/hr/locationTrackings/employees")
+                || url.contains("/hr/locationTrackings/employees?");
+    }
+
+    private static void emitSyntheticOk(Object reactContextObj, int requestId, String url) {
         if (reactContextObj == null) {
             return;
         }
         try {
             Class<?> rcClass = reactContextObj.getClass();
-            boolean hasInstance = (Boolean) rcClass.getMethod("hasActiveReactInstance").invoke(reactContextObj);
-            if (!hasInstance) {
-                return;
-            }
-
             ClassLoader cl = rcClass.getClassLoader();
-            Class<?> emitterClass = Class.forName("com.facebook.react.modules.core.DeviceEventManagerModule$RCTDeviceEventEmitter", false, cl);
-            Object emitter = rcClass.getMethod("getJSModule", Class.class).invoke(reactContextObj, emitterClass);
-            Method emitMethod = emitterClass.getMethod("emit", String.class, Object.class);
+
+            Method emitEventMethod;
+            Object emitTarget;
+            try {
+                emitEventMethod = rcClass.getMethod("emitDeviceEvent", String.class, Object.class);
+                emitTarget = reactContextObj;
+            } catch (NoSuchMethodException ignored) {
+                boolean hasInstance = (Boolean) rcClass.getMethod("hasActiveReactInstance").invoke(reactContextObj);
+                if (!hasInstance) {
+                    return;
+                }
+                Class<?> emitterClass = Class.forName("com.facebook.react.modules.core.DeviceEventManagerModule$RCTDeviceEventEmitter", false, cl);
+                emitTarget = rcClass.getMethod("getJSModule", Class.class).invoke(reactContextObj, emitterClass);
+                emitEventMethod = emitterClass.getMethod("emit", String.class, Object.class);
+            }
 
             Class<?> argsClass = Class.forName("com.facebook.react.bridge.Arguments", false, cl);
             Method createMapMethod = argsClass.getMethod("createMap");
@@ -219,31 +238,29 @@ public final class TrackingControlHelper {
             Method pushString = waClass.getMethod("pushString", String.class);
             Method pushMap = waClass.getMethod("pushMap", Class.forName("com.facebook.react.bridge.ReadableMap", false, cl));
             Method pushNull = waClass.getMethod("pushNull");
-            Method pushBoolean = waClass.getMethod("pushBoolean", boolean.class);
 
             pushInt.invoke(respArgs, requestId);
             pushInt.invoke(respArgs, 200);
             pushMap.invoke(respArgs, headersMap);
-            pushString.invoke(respArgs, "");
-            emitMethod.invoke(emitter, "didReceiveNetworkResponse", respArgs);
+            pushString.invoke(respArgs, url != null ? url : "");
+            emitEventMethod.invoke(emitTarget, "didReceiveNetworkResponse", respArgs);
 
             Object dataArgs = createArrayMethod.invoke(null);
             pushInt.invoke(dataArgs, requestId);
             pushString.invoke(dataArgs, "{}");
-            emitMethod.invoke(emitter, "didReceiveNetworkData", dataArgs);
+            emitEventMethod.invoke(emitTarget, "didReceiveNetworkData", dataArgs);
 
             Object completeArgs = createArrayMethod.invoke(null);
             pushInt.invoke(completeArgs, requestId);
             pushNull.invoke(completeArgs);
-            pushBoolean.invoke(completeArgs, false);
-            emitMethod.invoke(emitter, "didCompleteNetworkResponse", completeArgs);
+            emitEventMethod.invoke(emitTarget, "didCompleteNetworkResponse", completeArgs);
         } catch (Throwable t) {
             Log.e(TAG, "Failed to emit synthetic response", t);
         }
     }
 
     public static void forceSubmit(final Context context) {
-        final Context ctx = context != null ? context.getApplicationContext() : appContext;
+        final Context ctx = safeAppContext(context);
         if (ctx == null || lastBaseUrl == null || lastAuthHeader == null) {
             Log.w(TAG, "Cannot force submit: missing context/baseUrl/authHeader");
             return;

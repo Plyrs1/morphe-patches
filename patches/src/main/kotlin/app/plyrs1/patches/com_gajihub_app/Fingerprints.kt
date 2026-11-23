@@ -378,18 +378,39 @@ object SentryPerformanceProviderOnCreateFingerprint : Fingerprint(
 )
 
 /**
- * Matches RNBackgroundActionsTask.p(Context, b) -> Notification
+ * Matches RNBackgroundActionsTask notification builder (p in v2.0.14, o in v2.0.4) -> Notification.
  * Builds the foreground service notification for live tracking.
  */
 object RnBackgroundActionsNotificationFingerprint : Fingerprint(
     definingClass = "Lcom/asterinet/react/bgactions/RNBackgroundActionsTask;",
-    name = "p",
+    isStatic = true,
     returnType = "Landroid/app/Notification;"
 )
 
 /**
- * Matches NetworkingModule.sendRequestInternal(...)
- * Intercepts HTTP requests to count/gate /hr/locationTrackings/employees and capture auth headers.
+ * Matches NetworkingModule.sendRequestInternalReal(...) in React Native 0.76+ (GajiHub v2.0.14).
+ * Called by both sendRequest (JS) and sendRequestInternal.
+ */
+object NetworkingModuleSendRequestRealFingerprint : Fingerprint(
+    definingClass = "Lcom/facebook/react/modules/network/NetworkingModule;",
+    name = "sendRequestInternalReal",
+    returnType = "V",
+    parameters = listOf(
+        "Ljava/lang/String;",
+        "Ljava/lang/String;",
+        "I",
+        "Lcom/facebook/react/bridge/ReadableArray;",
+        "Lcom/facebook/react/bridge/ReadableMap;",
+        "Ljava/lang/String;",
+        "Z",
+        "I",
+        "Z",
+        "Ljava/lang/String;"
+    )
+)
+
+/**
+ * Matches NetworkingModule.sendRequestInternal(...) in older React Native (GajiHub v2.0.4 fallback).
  */
 object NetworkingModuleSendRequestFingerprint : Fingerprint(
     definingClass = "Lcom/facebook/react/modules/network/NetworkingModule;",

@@ -15,7 +15,7 @@ val trackingControlPatch = bytecodePatch(
     default = false
 ) {
     compatibleWith(COMPATIBILITY_GAJIHUB)
-
+    extendWith("extensions/extension.mpe")
     execute {
         // 1. Decorate RNBackgroundActionsTask.p(Context, b) -> Notification
         // Note: R8 reuses parameter register p0 for NotificationCompat.Builder and Notification before return.
@@ -42,25 +42,26 @@ val trackingControlPatch = bytecodePatch(
                 """.trimIndent()
             )
         }
-        // 2. Intercept NetworkingModule.sendRequestInternal(...)
-        NetworkingModuleSendRequestFingerprint.method.let { method ->
-            method.addInstructionsWithLabels(
-                0,
-                """
-                invoke-virtual {p0}, Lcom/facebook/react/bridge/ReactContextBaseJavaModule;->getReactApplicationContext()Lcom/facebook/react/bridge/ReactApplicationContext;
-                move-result-object v0
-                move-object/from16 v1, p1
-                move-object/from16 v2, p2
-                move/from16 v3, p3
-                move-object/from16 v4, p4
-                invoke-static {v0, v1, v2, v3, v4}, Lapp/plyrs1/extension/TrackingControlHelper;->onSendRequest(Ljava/lang/Object;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Z
-                move-result v0
-                if-eqz v0, :cond_allow
-                return-void
-                :cond_allow
-                nop
-                """.trimIndent()
-            )
-        }
+        // 2. Intercept NetworkingModule.sendRequestInternalReal (v2.0.14) or sendRequestInternal (v2.0.4)
+        val sendRequestMethod = NetworkingModuleSendRequestRealFingerprint.methodOrNull
+            ?: NetworkingModuleSendRequestFingerprint.method
+        sendRequestMethod.addInstructionsWithLabels(
+            0,
+            """
+            move-object/from16 v0, p0
+            invoke-virtual {v0}, Lcom/facebook/react/bridge/BaseJavaModule;->getReactApplicationContextIfActiveOrWarn()Lcom/facebook/react/bridge/ReactApplicationContext;
+            move-result-object v0
+            move-object/from16 v1, p1
+            move-object/from16 v2, p2
+            move/from16 v3, p3
+            move-object/from16 v4, p4
+            invoke-static {v0, v1, v2, v3, v4}, Lapp/plyrs1/extension/TrackingControlHelper;->onSendRequest(Ljava/lang/Object;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Z
+            move-result v0
+            if-eqz v0, :cond_allow
+            return-void
+            :cond_allow
+            nop
+            """.trimIndent()
+        )
     }
 }
