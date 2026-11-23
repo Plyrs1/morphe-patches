@@ -24,6 +24,7 @@ public final class TrackingControlHelper {
     private static final String ACTION_TOGGLE_PAUSE = "app.plyrs1.gajihub.ACTION_TOGGLE_PAUSE";
     private static final String ACTION_FORCE_SUBMIT = "app.plyrs1.gajihub.ACTION_FORCE_SUBMIT";
 
+    private static volatile Context appContext = null;
     private static volatile boolean paused = false;
     private static volatile int pushedCount = 0;
     private static volatile String lastBaseUrl = null;
@@ -33,21 +34,28 @@ public final class TrackingControlHelper {
 
     private TrackingControlHelper() {}
 
+    public static void setContext(Context context) {
+        if (context != null) {
+            appContext = context.getApplicationContext();
+            ensureReceiverRegistered(appContext);
+        }
+    }
+
     private static synchronized void ensureReceiverRegistered(Context context) {
         if (receiverRegistered || context == null) {
             return;
         }
-        Context appContext = context.getApplicationContext();
+        Context ctx = context.getApplicationContext();
         BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
-            public void onReceive(Context ctx, Intent intent) {
+            public void onReceive(Context c, Intent intent) {
                 if (intent == null || intent.getAction() == null) return;
                 String action = intent.getAction();
                 if (ACTION_TOGGLE_PAUSE.equals(action)) {
                     paused = !paused;
-                    refreshNotification(ctx);
+                    refreshNotification(c);
                 } else if (ACTION_FORCE_SUBMIT.equals(action)) {
-                    forceSubmit(ctx);
+                    forceSubmit(c);
                 }
             }
         };
@@ -55,18 +63,23 @@ public final class TrackingControlHelper {
         filter.addAction(ACTION_TOGGLE_PAUSE);
         filter.addAction(ACTION_FORCE_SUBMIT);
         if (Build.VERSION.SDK_INT >= 33) {
-            appContext.registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED);
+            ctx.registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED);
         } else {
-            appContext.registerReceiver(receiver, filter);
+            ctx.registerReceiver(receiver, filter);
         }
         receiverRegistered = true;
+    }
+
+    public static Notification decorateNotification(Notification notification) {
+        return decorateNotification(appContext, notification);
     }
 
     public static Notification decorateNotification(Context context, Notification notification) {
         if (context == null || notification == null) {
             return notification;
         }
-        ensureReceiverRegistered(context);
+        appContext = context.getApplicationContext();
+        ensureReceiverRegistered(appContext);
         lastOriginalNotification = notification;
 
         if (Build.VERSION.SDK_INT < 24) {
@@ -74,20 +87,21 @@ public final class TrackingControlHelper {
         }
 
         try {
-            Notification.Builder builder = Notification.Builder.recoverBuilder(context, notification);
+            Notification.Builder builder = Notification.Builder.recoverBuilder(appContext, notification);
             String statusText = (paused ? "PAUSED" : "ACTIVE") + " | Pushed: " + pushedCount;
             builder.setSubText(statusText);
 
             int flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
 
-            Intent toggleIntent = new Intent(ACTION_TOGGLE_PAUSE).setPackage(context.getPackageName());
-            PendingIntent togglePending = PendingIntent.getBroadcast(context, 101, toggleIntent, flags);
+            Intent toggleIntent = new Intent(ACTION_TOGGLE_PAUSE).setPackage(appContext.getPackageName());
+            PendingIntent togglePending = PendingIntent.getBroadcast(appContext, 101, toggleIntent, flags);
             String toggleLabel = paused ? "Resume" : "Pause";
-            builder.addAction(new Notification.Action.Builder(0, toggleLabel, togglePending).build());
+            int toggleIcon = paused ? android.R.drawable.ic_media_play : android.R.drawable.ic_media_pause;
+            builder.addAction(new Notification.Action.Builder(toggleIcon, toggleLabel, togglePending).build());
 
-            Intent submitIntent = new Intent(ACTION_FORCE_SUBMIT).setPackage(context.getPackageName());
-            PendingIntent submitPending = PendingIntent.getBroadcast(context, 102, submitIntent, flags);
-            builder.addAction(new Notification.Action.Builder(0, "Force Submit", submitPending).build());
+            Intent submitIntent = new Intent(ACTION_FORCE_SUBMIT).setPackage(appContext.getPackageName());
+            PendingIntent submitPending = PendingIntent.getBroadcast(appContext, 102, submitIntent, flags);
+            builder.addAction(new Notification.Action.Builder(android.R.drawable.ic_menu_mylocation, "Force Submit", submitPending).build());
 
             return builder.build();
         } catch (Throwable t) {
@@ -97,13 +111,14 @@ public final class TrackingControlHelper {
     }
 
     public static void refreshNotification(Context context) {
-        if (context == null || lastOriginalNotification == null) {
+        Context ctx = context != null ? context.getApplicationContext() : appContext;
+        if (ctx == null || lastOriginalNotification == null) {
             return;
         }
         try {
-            NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager nm = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
             if (nm != null) {
-                nm.notify(NOTIFICATION_ID, decorateNotification(context, lastOriginalNotification));
+                nm.notify(NOTIFICATION_ID, decorateNotification(ctx, lastOriginalNotification));
             }
         } catch (Throwable t) {
             Log.e(TAG, "Failed to refresh notification", t);
@@ -117,6 +132,9 @@ public final class TrackingControlHelper {
             int requestId,
             Object headersObj
     ) {
+        if (reactContextObj instanceof Context) {
+            setContext((Context) reactContextObj);
+        }
         if (url != null) {
             captureAuthAndBaseUrl(url, headersObj);
         }
@@ -160,10 +178,13 @@ public final class TrackingControlHelper {
                 Log.w(TAG, "Failed to read headers", t);
             }
         }
-        if (url.contains("/hr/locationTrackings/employees")) {
-            int idx = url.indexOf("/hr/locationTrackings/employees");
-            if (idx > 0) {
-                lastBaseUrl = url.substring(0, idx);
+        int idx = url.indexOf("/hr/locationTrackings/employees");
+        if (idx > 0) {
+            lastBaseUrl = url.substring(0, idx);
+        } else if (lastBaseUrl == null) {
+            int hrIdx = url.indexOf("/hr/");
+            if (hrIdx > 0) {
+                lastBaseUrl = url.substring(0, hrIdx);
             }
         }
     }
@@ -222,14 +243,15 @@ public final class TrackingControlHelper {
     }
 
     public static void forceSubmit(final Context context) {
-        if (context == null || lastBaseUrl == null || lastAuthHeader == null) {
-            Log.w(TAG, "Cannot force submit: missing baseUrl or authHeader");
+        final Context ctx = context != null ? context.getApplicationContext() : appContext;
+        if (ctx == null || lastBaseUrl == null || lastAuthHeader == null) {
+            Log.w(TAG, "Cannot force submit: missing context/baseUrl/authHeader");
             return;
         }
         new Thread(() -> {
             HttpURLConnection conn = null;
             try {
-                Location loc = getBestLastKnownLocation(context);
+                Location loc = getBestLastKnownLocation(ctx);
                 if (loc == null) {
                     Log.w(TAG, "Cannot force submit: no last known location");
                     return;
@@ -252,7 +274,7 @@ public final class TrackingControlHelper {
                 int code = conn.getResponseCode();
                 if (code >= 200 && code < 300) {
                     pushedCount++;
-                    refreshNotification(context);
+                    refreshNotification(ctx);
                 } else {
                     Log.w(TAG, "Force submit returned HTTP " + code);
                 }

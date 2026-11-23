@@ -18,6 +18,8 @@ val trackingControlPatch = bytecodePatch(
 
     execute {
         // 1. Decorate RNBackgroundActionsTask.p(Context, b) -> Notification
+        // Note: R8 reuses parameter register p0 for NotificationCompat.Builder and Notification before return.
+        // Capture p0 (Context) at method entry, then pass only the returned Notification register before return-object.
         RnBackgroundActionsNotificationFingerprint.method.let { method ->
             val instructions = method.instructions
             for (index in instructions.indices.reversed()) {
@@ -27,14 +29,19 @@ val trackingControlPatch = bytecodePatch(
                     method.addInstructions(
                         index,
                         """
-                        invoke-static {p0, v$reg}, Lapp/plyrs1/extension/TrackingControlHelper;->decorateNotification(Landroid/content/Context;Landroid/app/Notification;)Landroid/app/Notification;
+                        invoke-static {v$reg}, Lapp/plyrs1/extension/TrackingControlHelper;->decorateNotification(Landroid/app/Notification;)Landroid/app/Notification;
                         move-result-object v$reg
                         """.trimIndent()
                     )
                 }
             }
+            method.addInstructions(
+                0,
+                """
+                invoke-static {p0}, Lapp/plyrs1/extension/TrackingControlHelper;->setContext(Landroid/content/Context;)V
+                """.trimIndent()
+            )
         }
-
         // 2. Intercept NetworkingModule.sendRequestInternal(...)
         NetworkingModuleSendRequestFingerprint.method.let { method ->
             method.addInstructionsWithLabels(
