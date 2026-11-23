@@ -1,3 +1,9 @@
+## [1.6.0-dev.8](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.7...v1.6.0-dev.8) (2026-11-23)
+
+### 🐛 Bug Fixes
+
+* **com_gajihub_app:** avoid clobbered p0 in RNBackgroundActionsTask.p ([6f4c2ff](https://github.com/Plyrs1/morphe-patches/commit/6f4c2ffcedfe5a21035f9e9d93fecc09b627bda2))
+
 ## [1.6.0-dev.7](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.6...v1.6.0-dev.7) (2026-11-23)
 
 ### ✨ New Features
