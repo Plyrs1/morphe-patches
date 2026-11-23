@@ -1,6 +1,8 @@
 # 👋🧩 Plyrs1 Morphe Patches
 
-Repository for custom Morphe patches by Plyrs1.
+This repo contains patches that either I personally use, or I find interesting to patch. Because of that, I cannot guarantee if it works properly, as I only patch things I need. But feel free to leave feature/pull request, I will check on my free time.
+
+Note that most of the patches are done by AI, but I monitor the process and check the results, and verify it works at least in emulator.
 
 ## ❓ About
 
