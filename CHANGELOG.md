@@ -1,3 +1,9 @@
+## [1.6.0-dev.9](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.8...v1.6.0-dev.9) (2026-11-23)
+
+### 🐛 Bug Fixes
+
+* **com_gajihub_app:** bundle extension DEX and hook sendRequestInternalReal in Live Tracking Controls ([a262aa3](https://github.com/Plyrs1/morphe-patches/commit/a262aa33bcaa088db88c0d6c9207462e725feeb1))
+
 ## [1.6.0-dev.8](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.7...v1.6.0-dev.8) (2026-11-23)
 
 ### 🐛 Bug Fixes
