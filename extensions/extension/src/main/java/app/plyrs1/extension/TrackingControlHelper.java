@@ -86,16 +86,30 @@ public final class TrackingControlHelper {
         }
         appContext = safeAppContext(context);
         ensureReceiverRegistered(appContext);
-        lastOriginalNotification = notification;
+        lastOriginalNotification = notification.clone();
 
         if (Build.VERSION.SDK_INT < 24) {
             return notification;
         }
 
         try {
-            Notification.Builder builder = Notification.Builder.recoverBuilder(appContext, notification);
-            String statusText = (paused ? "PAUSED" : "ACTIVE") + " | Pushed: " + pushedCount;
-            builder.setSubText(statusText);
+            Notification base = lastOriginalNotification.clone();
+            if (paused && base.extras != null) {
+                base.extras.remove(Notification.EXTRA_PROGRESS);
+                base.extras.remove(Notification.EXTRA_PROGRESS_MAX);
+                base.extras.remove(Notification.EXTRA_PROGRESS_INDETERMINATE);
+            }
+            Notification.Builder builder = Notification.Builder.recoverBuilder(appContext, base);
+            if (paused) {
+                builder.setContentTitle("Live tracking is paused (Manual)");
+                builder.setContentText("Pushed: " + pushedCount + " — tap Resume or Force Submit");
+                builder.setSubText(null);
+                builder.setProgress(0, 0, false);
+            } else {
+                builder.setContentTitle("Live tracking is active");
+                builder.setContentText("Pushed: " + pushedCount);
+                builder.setSubText(null);
+            }
 
             int flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
 
@@ -103,17 +117,26 @@ public final class TrackingControlHelper {
             PendingIntent togglePending = PendingIntent.getBroadcast(appContext, 101, toggleIntent, flags);
             String toggleLabel = paused ? "Resume" : "Pause";
             int toggleIcon = paused ? android.R.drawable.ic_media_play : android.R.drawable.ic_media_pause;
-            builder.addAction(new Notification.Action.Builder(toggleIcon, toggleLabel, togglePending).build());
+            Notification.Action toggleAction = new Notification.Action.Builder(toggleIcon, toggleLabel, togglePending).build();
 
             Intent submitIntent = new Intent(ACTION_FORCE_SUBMIT).setPackage(appContext.getPackageName());
             PendingIntent submitPending = PendingIntent.getBroadcast(appContext, 102, submitIntent, flags);
-            builder.addAction(new Notification.Action.Builder(android.R.drawable.ic_menu_mylocation, "Force Submit", submitPending).build());
+            Notification.Action submitAction = new Notification.Action.Builder(android.R.drawable.ic_menu_mylocation, "Force Submit", submitPending).build();
+
+            builder.setActions(toggleAction, submitAction);
+            if (TrackingPersistenceHelper.isActive()) {
+                TrackingPersistenceHelper.applyDeleteIntent(appContext, builder);
+            }
 
             return builder.build();
         } catch (Throwable t) {
             Log.e(TAG, "Failed to decorate notification", t);
             return notification;
         }
+    }
+
+    public static boolean hasLastNotification() {
+        return lastOriginalNotification != null;
     }
 
     public static void refreshNotification(Context context) {

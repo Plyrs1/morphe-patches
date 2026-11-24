@@ -428,3 +428,36 @@ object NetworkingModuleSendRequestFingerprint : Fingerprint(
         "Z"
     )
 )
+
+/**
+ * Matches BackgroundActionsModule.start(ReadableMap, Promise)V
+ */
+object BackgroundActionsModuleStartFingerprint : Fingerprint(
+    definingClass = "Lcom/asterinet/react/bgactions/BackgroundActionsModule;",
+    name = "start",
+    returnType = "V",
+    parameters = listOf(
+        "Lcom/facebook/react/bridge/ReadableMap;",
+        "Lcom/facebook/react/bridge/Promise;"
+    )
+)
+
+/**
+ * Matches BackgroundActionsModule.stop(Promise)V
+ */
+object BackgroundActionsModuleStopFingerprint : Fingerprint(
+    definingClass = "Lcom/asterinet/react/bgactions/BackgroundActionsModule;",
+    name = "stop",
+    returnType = "V",
+    parameters = listOf("Lcom/facebook/react/bridge/Promise;")
+)
+
+/**
+ * Matches RNBackgroundActionsTask.onStartCommand(Intent, int, int)I
+ */
+object RnBackgroundActionsOnStartCommandFingerprint : Fingerprint(
+    definingClass = "Lcom/asterinet/react/bgactions/RNBackgroundActionsTask;",
+    name = "onStartCommand",
+    returnType = "I",
+    parameters = listOf("Landroid/content/Intent;", "I", "I")
+)
