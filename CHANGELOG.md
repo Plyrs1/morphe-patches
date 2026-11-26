@@ -1,3 +1,74 @@
+## [1.6.0-dev.11](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.10...v1.6.0-dev.11) (2026-11-24)
+
+### 🐛 Bug Fixes
+
+* **com_gajihub_app:** cancel tracking notification and prevent recovery on clock-out ([cfb3ef9](https://github.com/Plyrs1/morphe-patches/commit/cfb3ef9755261ef882ca84ce4a4138a7b17ae863))
+
+## [1.6.0-dev.10](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.9...v1.6.0-dev.10) (2026-11-24)
+
+### ✨ New Features
+
+* **com_gajihub_app:** polish Live Tracking Controls notification and add Persistent Live Tracking patch ([565dc14](https://github.com/Plyrs1/morphe-patches/commit/565dc148e84af6c4a9260e4c1c2dd716cdf7cb21))
+
+## [1.6.0-dev.9](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.8...v1.6.0-dev.9) (2026-11-23)
+
+### 🐛 Bug Fixes
+
+* **com_gajihub_app:** bundle extension DEX and hook sendRequestInternalReal in Live Tracking Controls ([a262aa3](https://github.com/Plyrs1/morphe-patches/commit/a262aa33bcaa088db88c0d6c9207462e725feeb1))
+
+## [1.6.0-dev.8](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.7...v1.6.0-dev.8) (2026-11-23)
+
+### 🐛 Bug Fixes
+
+* **com_gajihub_app:** avoid clobbered p0 in RNBackgroundActionsTask.p ([6f4c2ff](https://github.com/Plyrs1/morphe-patches/commit/6f4c2ffcedfe5a21035f9e9d93fecc09b627bda2))
+
+## [1.6.0-dev.7](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.6...v1.6.0-dev.7) (2026-11-23)
+
+### ✨ New Features
+
+* **com_gajihub_app:** add Live Tracking Controls patch ([99cd7de](https://github.com/Plyrs1/morphe-patches/commit/99cd7dec4c319ebe054c0d51b38a4528fd7b3680))
+
+## [1.6.0-dev.6](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.5...v1.6.0-dev.6) (2026-11-23)
+
+### ✨ New Features
+
+* **com_gajihub_app:** add Replace Google Maps API Key patch with stringOption ([3e02110](https://github.com/Plyrs1/morphe-patches/commit/3e021106782e05d32e360a5749b3ae1afc5bb0a6))
+
+## [1.6.0-dev.5](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.4...v1.6.0-dev.5) (2026-11-23)
+
+### 🐛 Bug Fixes
+
+* **com_gajihub_app:** neutralize Sentry providers in bytecode and preserve FirebaseInitProvider ([8b0f090](https://github.com/Plyrs1/morphe-patches/commit/8b0f09080b193e2b7b69b3d27dd740b9e4619cb2))
+
+## [1.6.0-dev.4](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.3...v1.6.0-dev.4) (2026-11-22)
+
+### ✨ New Features
+
+* **com_gajihub_app:** add v2.0.14 support and remote update suppression ([28417d5](https://github.com/Plyrs1/morphe-patches/commit/28417d566a5d2246a1d4e40d8ba7b47cd5f2c98a))
+
+## [1.6.0-dev.3](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.2...v1.6.0-dev.3) (2026-11-22)
+
+### ✨ New Features
+
+* **com_habitrpg_android_habitica:** add Habitica 4.11.2 support and subscriber free armoire roll ([a24250c](https://github.com/Plyrs1/morphe-patches/commit/a24250c8a1ad5c45e94e79aa036bca71fa87baaf))
+
+## [1.6.0-dev.2](https://github.com/Plyrs1/morphe-patches/compare/v1.6.0-dev.1...v1.6.0-dev.2) (2026-11-22)
+
+### ✨ New Features
+
+* **com_gajihub_app:** add comprehensive telemetry suppression ([a52625e](https://github.com/Plyrs1/morphe-patches/commit/a52625e297540f7d652265b54c4ecb0d6c47bbc4))
+* **com_gajihub_app:** add mock location bypass and telemetry suppression patches ([afd1a31](https://github.com/Plyrs1/morphe-patches/commit/afd1a316ba2cf2650bcd17a756cfffaaa0bf53d7))
+
+### 🐛 Bug Fixes
+
+* **com_gajihub_app:** fix login crash and SoLoader ARM64 emulation ([cc27fc7](https://github.com/Plyrs1/morphe-patches/commit/cc27fc721fb55574bf7d8c0d852b3a70cf2a8232))
+
+## [1.6.0-dev.1](https://github.com/Plyrs1/morphe-patches/compare/v1.5.0...v1.6.0-dev.1) (2026-11-22)
+
+### ✨ New Features
+
+* **com_google_android_projection_gearhead:** re-add android auto patch ([3895091](https://github.com/Plyrs1/morphe-patches/commit/3895091e2b6f392167d851f1404aaf7086b5da58))
+
 ## [1.5.0](https://github.com/Plyrs1/morphe-patches/compare/v1.4.0...v1.5.0) (2026-11-22)
 
 ### ✨ New Features
